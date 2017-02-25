@@ -1,0 +1,191 @@
+@import '../styles/variables.scss';
+@import '../styles/type.scss';
+
+.home {
+  height: 100vh;
+  width: 100%;
+  background-image: url('../assets/images/seattle-hero3-sm.jpg');
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;
+
+  @media (min-width: $screen-sm) {
+    background-image: url('../assets/images/seattle-hero3.jpg');
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom,  rgba(0,0,0,0.10) 0%,rgba(0,0,0,0.80) 75%); /* W3C */
+  }
+
+  .intro-text {
+    position: absolute;
+    bottom: 210px;
+    left: 22px;
+    width: calc(100% - 22px);
+    text-align: center;
+    overflow: hidden;
+
+    @media (min-width: $screen-sm) {
+      bottom: 310px;
+      left: 60px;
+      width: calc(100% - 60px);
+    }
+
+    h1 {
+      padding: 0 15px;
+      margin: 0 auto;
+      max-width: 450px;
+      font-size: 1em;
+      line-height: 1.7;
+      letter-spacing: 1px;
+      font-weight: 300;
+      color: $white;
+      @extend %hand;
+      transform: perspective( 600px ) rotateY( 15deg ) rotateZ(-1deg);
+
+      @media (min-width: $screen-sm) {
+        padding-bottom: 20px;
+        max-width: 650px;
+        font-size: 1.4em;
+      }
+
+      @media (min-width: $screen-md) {
+        max-width: 775px;
+        font-size: 1.7em;
+      }
+
+      a {
+        color: $orange-light;
+
+        &:hover,
+        &:focus {
+          color: $orange-lighter;
+        }
+      }
+    }
+  }
+
+  .button-overlay {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    color: $white;
+    font-weight: 300;
+    font-size: .9em;
+    letter-spacing: 1px;
+    text-align: center;
+
+    @media (min-width: $screen-sm) {
+      font-size: 1em;
+      bottom: 70px;
+    }
+
+    &__button {
+      position: relative;
+      float: left;
+      width: 50%;
+
+      @media (min-width: $screen-sm) {
+        width: 35%;
+      }
+
+      @media (min-width: $screen-md) {
+        width: 35%;
+      }
+
+      @media (min-width: $screen-lg) {
+        width: 25%;
+      }
+
+      &:first-of-type {
+        @media (min-width: $screen-sm) {
+          margin-left: 14%;
+        }
+
+        @media (min-width: $screen-md) {
+          margin-left: 14%;
+        }
+
+        @media (min-width: $screen-lg) {
+          margin-left: 25%;
+        }
+      }
+    }
+
+    a {
+      position: relative;
+      display: inline-block;
+      width: 164px;
+      height: 146px;
+      color: $white;
+      text-decoration: none;
+      transition: color, 0.4s;
+
+      @media (min-width: $screen-sm) {
+        height: 164px;
+      }
+
+      img {
+        display: block;
+        height: 53px;
+        margin: 0 auto;
+        transition: all, 0.4s;
+
+        @media (min-width: $screen-sm) {
+          height: 123px;
+        }
+      }
+
+      .circle {
+        display: block;
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        border: rgba($white, 0) 1px solid;
+        border-radius: 50%;
+        left: 50%;
+        margin: -15px -40px 0;
+        transition: all, 0.4s;
+
+        @media (min-width: $screen-sm) {
+          margin-top: 35px;
+          margin-bottom: 20px;
+          margin-left: -34px;
+        }
+      }
+
+      &:hover {
+        color: rgba($white, 0);
+
+        img {
+          height: 43px;
+          margin-top: 5px;
+
+          @media (min-width: $screen-sm) {
+            height: 53px;
+            margin-top: 50px;
+          }
+        }
+
+        .circle {
+          border: $white 1px solid;
+          width: 100px;
+          height: 100px;
+          margin: -25px -50px 0;
+
+          @media (min-width: $screen-sm) {
+            margin-left: -65px;
+            margin-top: 10px;
+            width: 130px;
+            height: 130px;
+          }
+        }
+      }
+    }
+  }
+}

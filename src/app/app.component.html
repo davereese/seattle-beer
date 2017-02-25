@@ -1,0 +1,22 @@
+<div class="app">
+  <nav class="nav" [ngClass]="{'home': currentPage === '/'}">
+    <div class="logo">
+      <a routerLink="/"
+        routerLinkActive
+        #rla="routerLinkActive"
+        [routerLinkActiveOptions]="{exact: true}">
+        <img *ngIf="!rla.isActive" alt="Seattle Beer" src="assets/images/seattle_beer_main_logo_v2.svg">
+        <img *ngIf="rla.isActive" alt="Seattle Beer" src="assets/images/seattle_beer_main_logo_darker_v2.svg">
+      </a>
+    </div>
+    <ul *ngIf="!rla.isActive">
+      <li
+        *ngFor="let item of nav">
+        <a [routerLink]="item.link">
+          {{ item.name }}<img [src]="item.image" [alt]="item.name">
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <router-outlet></router-outlet>
+</div>

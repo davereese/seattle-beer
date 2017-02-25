@@ -1,0 +1,99 @@
+@import '../styles/variables.scss';
+
+nav {
+  background-color: $gray-dark;
+  height: 60px;
+
+  &.home {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: transparent;
+    z-index: 10;
+
+    .logo {
+      float: none;
+      margin: 0 auto;
+      padding-left: 0;
+      max-width: 255px;
+      
+      @media (min-width: $screen-sm) {
+        float: left;
+        margin: 0;
+        padding-left: 15px;
+        max-width: 345px;
+      }
+    }
+  }
+
+  .logo {
+    font-size: 16px;
+    padding: 18px 0 0 15px;
+    max-width: 200px;
+    width: 100%;
+    float: left;
+
+    @media (min-width: $screen-sm) {
+      max-width: 345px;
+    }
+  }
+
+  ul {
+    padding-right: 10px;
+    margin: 0;
+    padding-left: 0;
+    float: right;
+
+    @media (min-width: $screen-sm) {
+      padding-right: 15px;
+    }
+
+    li {
+      display: inline-block;
+
+      a {
+        display: block;
+        position: relative;
+        margin-top: 13px;
+        margin-left: 10px;
+        height: 29px;
+        width: 50px;
+        text-decoration: none;
+        text-align: center;
+        font-size: 1.3em;
+        line-height: 1.6;
+        color: $gray-dark;
+        transition: color 0.5s;
+
+        @media (min-width: $screen-sm) {
+          margin-top: 9px;
+          width: 70px;
+          line-height: 1.8;
+          font-size: 1.5em;
+        }
+
+        img {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          margin-left: -28px;
+          height: 32px;
+          transition: opacity 0.5s;
+
+          @media (min-width: $screen-sm) {
+            height: 42px;
+          }
+        }
+
+        &:hover {
+          color: $green-light;
+          text-decoration: none;
+
+          img {
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
+}

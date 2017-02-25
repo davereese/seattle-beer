@@ -1,0 +1,60 @@
+@import '../../../../styles/variables.scss';
+@import '../../../../styles/type.scss';
+
+.brewery-detail {
+  position: relative;
+  padding: 15px;
+  margin: 15px 15px 0;
+  width: calc(100% - 60px);
+  background: $white;
+  box-shadow: 0 0 5px rgba($gray-med-2, 0.2);
+  transition: box-shadow 0.5s;
+
+  @media (min-width: $screen-sm) {
+    margin: 15px;
+    width: calc(50% - 60px);
+    height: 150px;
+    float: left;
+  }
+
+  @media (min-width: $screen-md) {
+    width: calc(33% - 60px);
+    height: 200px;
+  }
+
+  @media (min-width: $screen-lg) {
+    width: calc(25% - 60px);
+  }
+
+  &:hover {
+    box-shadow: 0 0 20px rgba($gray-med-2, 0.5);
+  }
+
+  &__number {
+    position: absolute;
+    right: 8px;
+    top: -5px;
+    @extend %hand;
+    font-size: 18px;
+    text-align: right;
+  }
+
+  &__title {
+    margin: 0;
+    padding-right: 50px;
+    font-size: 17px;
+    font-weight: 300;
+    color: $orange;
+
+    @media (min-width: $screen-sm) {
+      font-size: 20px;
+    }
+  }
+
+  &__meta {
+    @media (min-width: $screen-sm) {
+      position: absolute;
+      bottom: 0;
+    }
+  }
+}

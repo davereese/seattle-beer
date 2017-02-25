@@ -1,0 +1,47 @@
+@import './styles/variables.scss';
+@import './styles/type.scss';
+
+body {
+  margin: 0;
+  background-color: $gray-light;
+  font-size: 14px;
+
+  @media (min-width: $screen-sm) {
+    font-size: 16px;
+  }
+}
+
+a {
+  color: $green-med;
+  text-decoration: none;
+  transition: color 0.3s;
+
+  &:hover,
+  &:focus {
+    color: $green-darker;
+  }
+}
+
+p {
+  margin: 0.4em 0;
+
+  @media (min-width: $screen-sm) {
+    margin: 1em 0;
+  }
+}
+
+.gm-style-iw {
+  .sebm-google-map-info-window-content {
+    min-width: 300px;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+
+    h3 {
+      margin: 8px 0 0;
+      padding-right: 50px;
+      font-size: 20px;
+      font-weight: 300;
+      color: $orange;
+    }
+  }
+}
