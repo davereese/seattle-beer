@@ -45,3 +45,60 @@ p {
     }
   }
 }
+
+.loader {
+  display: block;
+  margin: calc(50vh - 22px) auto;
+  padding: 0;
+  height: 45px;
+  width: 42px;
+  box-shadow: 0 0 10px rgba($gray-med-2, 0.8);
+  line-height: 0;
+
+  @keyframes colorchange1 {
+    0% { background-color: $brown; }
+    25% { background-color: $orange; }
+    50% { background-color: $yellow; }
+    75% { background-color: $orange; }
+    100% { background-color: $brown; }
+  }
+
+  @keyframes colorchange2 {
+    0% { background-color: $orange; }
+    25% { background-color: $yellow; }
+    50% { background-color: $orange; }
+    75% { background-color: $brown; }
+    100% { background-color: $orange; }
+  }
+
+  @keyframes colorchange3 {
+    0% { background-color: $yellow; }
+    25% { background-color: $orange; }
+    50% { background-color: $brown; }
+    75% { background-color: $orange; }
+    100% { background-color: $yellow; }
+  }
+
+  &__bar {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    width: 14px;
+    height: 45px;
+    background-color: $brown;
+    animation-name: colorchange3;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+
+    &:nth-child(2) {
+      animation-name: colorchange2;
+      background-color: $orange;
+    }
+
+    &:nth-child(3) {
+      animation-name: colorchange1;
+      background-color: $yellow;
+    }
+  }
+}
