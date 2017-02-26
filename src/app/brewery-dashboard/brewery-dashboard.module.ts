@@ -11,7 +11,12 @@ import { ListDashboardComponent } from './containers/list-dashboard/list-dashboa
 import { BreweryDetailComponent } from './components/brewery-detail/brewery-detail.component';
 
 const routes: Routes = [
-  { path: 'map', component: MapDashboardComponent },
+  { path: 'map',
+    children: [
+      { path: '', component: MapDashboardComponent },
+      { path: ':id', component: MapDashboardComponent }
+    ]
+  },
   { path: 'list', component: ListDashboardComponent }
 ];
 

@@ -11,7 +11,7 @@ import { Brewery } from './brewery-dashboard/models/brewery.interface';
   template: `
     <div class="home">
       <div class="intro-text">
-        <h1 class="hidden-xs">This is Seattle. Home to <a routerLink="/list">{{ breweriesCount || '100' }}</a> PNW breweries. From {{ brewery1 }} to {{ brewery2 }}, {{ brewery3 }} to {{ brewery4 }}, we'll help you find them all.</h1>
+        <h1 class="hidden-xs">This is Seattle. Home to <a routerLink="/list">{{ breweriesCount || '100' }}</a> PNW breweries. From <a [routerLink]="'map/'+brewery1?.id">{{ brewery1?.shortName }}</a> to <a [routerLink]="'map/'+brewery2?.id">{{ brewery2?.shortName }}</a>, <a [routerLink]="'map/'+brewery3?.id">{{ brewery3?.shortName }}</a> to <a [routerLink]="'map/'+brewery4?.id">{{ brewery4?.shortName }}</a>, we'll help you find them all.</h1>
       </div>
 
       <div class="button-overlay">
@@ -37,10 +37,10 @@ export class HomeComponent {
   breweriesCount: FirebaseListObservable<any>;
   breweries: FirebaseListObservable<any>;
   data = [];
-  brewery1: string;
-  brewery2: string;
-  brewery3: string;
-  brewery4: string;
+  brewery1: Brewery;
+  brewery2: Brewery;
+  brewery3: Brewery;
+  brewery4: Brewery;
 
   constructor(
     af: AngularFire
@@ -51,12 +51,14 @@ export class HomeComponent {
     this.breweries.subscribe(snapshots=>{
           snapshots = this.shuffle(snapshots);
           snapshots.forEach(snapshot => {
-            this.data.push(snapshot.val());        
+            let tempSnapshot = snapshot.val();
+            tempSnapshot.id = snapshot.key;
+            this.data.push(tempSnapshot);
           });
-          this.brewery1 = this.data[0].shortName;
-          this.brewery2 = this.data[1].shortName;
-          this.brewery3 = this.data[2].shortName;
-          this.brewery4 = this.data[3].shortName;
+          this.brewery1 = this.data[0];
+          this.brewery2 = this.data[1];
+          this.brewery3 = this.data[2];
+          this.brewery4 = this.data[3];
       });
   }
   
