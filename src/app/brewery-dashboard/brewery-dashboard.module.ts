@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { AgmCoreModule } from 'angular2-google-maps/core';
+import { FormsModule } from '@angular/forms';
+import { SearchPipe } from './pipes/search-pipe/search.pipe';
 
 // containers
 import { MapDashboardComponent } from './containers/map-dashboard/map-dashboard.component';
@@ -24,10 +26,12 @@ const routes: Routes = [
   declarations: [
     MapDashboardComponent,
     ListDashboardComponent,
-    BreweryDetailComponent
+    BreweryDetailComponent,
+    SearchPipe
   ],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule.forChild(routes),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDCyIV6cqUIhjtQHeemH4X9eAABSx22sd4'

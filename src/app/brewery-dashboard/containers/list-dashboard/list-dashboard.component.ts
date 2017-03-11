@@ -8,8 +8,16 @@ import { Brewery } from '../../models/brewery.interface';
   styleUrls: ['list-dashboard.component.scss'],
   template: `
   <div class="brewery-list">
+    <input
+      type="text"
+      placeholder=" Search by brewery name"
+      name="search"
+      [(ngModel)]="search">
+    <div *ngIf="(breweries | async | searchPipe:'name':search).length === 0">
+      <div class="no-matches">No breweries found.</div>
+    </div>
     <brewery-detail
-      *ngFor="let brewery of breweries | async; let i = index"
+      *ngFor="let brewery of breweries | async | searchPipe:'name':search; let i = index"
       [detail]="brewery"
       [index]="i">
     </brewery-detail>

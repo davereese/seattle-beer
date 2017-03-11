@@ -1,3 +1,37 @@
+@import '../../../../styles/variables.scss';
+@import '../../../../styles/type.scss';
+
 .brewery-list {
   padding-bottom: 15px;
+
+  input[type="text"] {
+    box-sizing: border-box;
+    margin: 15px 15px 0;
+    padding: 0 15px;
+    height: 45px;
+    width: calc(100% - 30px);
+    outline: none;
+    background-color: transparent;
+    border: 0;
+    box-shadow: 0 10px 10px -8px rgba($gray-med-2, 0.5);
+    font-size: 20px;
+    @extend .hand;
+
+    &::placeholder {
+      color: $gray-med-1;
+    }
+
+    @media (min-width: $screen-sm) {
+      margin: 15px;
+      float: left;
+    }
+  }
+
+  .no-matches {
+    padding-top: 30px;
+    clear: both;
+    font-size: 20px;
+    color: $gray-dark;
+    text-align: center;
+  }
 }
