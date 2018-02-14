@@ -11,7 +11,16 @@ import { Brewery } from './brewery-dashboard/models/brewery.interface';
   template: `
     <div class="home">
       <div class="intro-text">
-        <h1 class="hidden-xs">This is Seattle. Home to <a routerLink="/list">{{ breweriesCount || '100' }}</a> PNW breweries. From <a [routerLink]="'map/'+brewery1?.id">{{ brewery1?.shortName }}</a> to <a [routerLink]="'map/'+brewery2?.id">{{ brewery2?.shortName }}</a>, <a [routerLink]="'map/'+brewery3?.id">{{ brewery3?.shortName }}</a> to <a [routerLink]="'map/'+brewery4?.id">{{ brewery4?.shortName }}</a>, we'll help you find them all.</h1>
+        <h1 class="hidden-xs">
+          This is Seattle. Home to 
+          <a routerLink="/list">{{ breweriesCount || '100' }}</a> 
+          PNW breweries. From 
+          <a [routerLink]="'map/'+brewery1?.id">{{ brewery1?.shortName }}</a> to 
+          <a [routerLink]="'map/'+brewery2?.id">{{ brewery2?.shortName }}</a>, 
+          <a [routerLink]="'map/'+brewery3?.id">{{ brewery3?.shortName }}</a> to 
+          <a [routerLink]="'map/'+brewery4?.id">{{ brewery4?.shortName }}</a>, 
+          we'll help you find them all.
+        </h1>
       </div>
 
       <div class="button-overlay">
@@ -48,10 +57,10 @@ export class HomeComponent {
     this.breweries = af.database.list('/Breweries', { preserveSnapshot: true});
     this.breweries.map(list => list.length).subscribe(length => this.breweriesCount = length);
 
-    this.breweries.subscribe(snapshots=>{
+    this.breweries.subscribe( snapshots => {
           snapshots = this.shuffle(snapshots);
           snapshots.forEach(snapshot => {
-            let tempSnapshot = snapshot.val();
+            const tempSnapshot = snapshot.val();
             tempSnapshot.id = snapshot.key;
             this.data.push(tempSnapshot);
           });
@@ -61,9 +70,9 @@ export class HomeComponent {
           this.brewery4 = this.data[3];
       });
   }
-  
+
   shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {

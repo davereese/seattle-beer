@@ -3,6 +3,8 @@
 
 .brewery-list {
   padding-bottom: 15px;
+  padding-top: 1px;
+  margin-top: -1px;
 
   input[type="text"] {
     box-sizing: border-box;
@@ -15,6 +17,7 @@
     border: 0;
     box-shadow: 0 10px 10px -8px rgba($gray-med-2, 0.5);
     font-size: 20px;
+    text-indent: 5px;
     @extend .hand;
 
     &::placeholder {

@@ -17,9 +17,12 @@ interface marker {
 }
 
 @Component({
-  selector: 'map-dashboard',
+  selector: 'app-map-dashboard',
   styleUrls: ['map-dashboard.component.scss'],
   template: `
+  <div class="loader" *ngIf="isLoading">
+    <div class="loader__bar"></div><div class="loader__bar"></div><div class="loader__bar"></div>
+  </div>
   <sebm-google-map
     [latitude]="lat"
     [longitude]="lng"
@@ -47,6 +50,7 @@ interface marker {
   `
 })
 export class MapDashboardComponent {
+  isLoading: boolean = true;
   lat: number = 47.6062;
   lng: number = -122.3321;
   zoom: number = 12;
@@ -97,12 +101,14 @@ export class MapDashboardComponent {
     af: AngularFire
   ) {
     this.route.params.subscribe((params) => {
-      if(params['id']){
-        this.breweries = af.database.list('/Breweries/'+params['id'], { preserveSnapshot: true});
+      if (params['id']){
+        this.breweries = af.database.list('/Breweries/'+params['id'], { preserveSnapshot: true });
       } else {
         this.breweries = af.database.list('/Breweries', { preserveSnapshot: true});
       }
-      this.breweries.subscribe(snapshots=>{
+      this.breweries.subscribe(
+        snapshots => {
+          this.isLoading = false;
           snapshots.forEach(snapshot => {
             this.data.push(snapshot.val());
           });

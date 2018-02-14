@@ -10,11 +10,14 @@ import { Brewery } from '../../models/brewery.interface';
   <div class="brewery-list">
     <input
       type="text"
-      placeholder=" Search by brewery name"
+      placeholder="Search by brewery name"
       name="search"
       [(ngModel)]="search">
     <div *ngIf="(breweries | async | searchPipe:'name':search).length === 0">
       <div class="no-matches">No breweries found.</div>
+    </div>
+    <div class="loader" *ngIf="isLoading">
+      <div class="loader__bar"></div><div class="loader__bar"></div><div class="loader__bar"></div>
     </div>
     <brewery-detail
       *ngFor="let brewery of breweries | async | searchPipe:'name':search; let i = index"
@@ -26,10 +29,12 @@ import { Brewery } from '../../models/brewery.interface';
 })
 export class ListDashboardComponent {
   breweries: FirebaseListObservable<any>;
+  isLoading: boolean = true;
 
   constructor(
     af: AngularFire
   ) {
     this.breweries = af.database.list('/Breweries');
+    this.breweries.subscribe(complete => this.isLoading = false);
   }
 }
