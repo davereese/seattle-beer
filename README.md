@@ -15,6 +15,7 @@ This is Seattle. Home to over 100 PNW breweries. From Redhook to Stoup, Elysian 
 - Node v6.9.5
 
 ## Production
+Run `ng build --production` in a deploy branch
 [http://www.seattle-beer.com](http://www.seattle-beer.com)
 
 ---
