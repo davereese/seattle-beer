@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
-import 'rxjs/add/operator/switchMap';
-
 import { Brewery } from '../../models/brewery.interface';
 
 interface marker {
@@ -24,6 +22,7 @@ interface marker {
     <div class="loader__bar"></div><div class="loader__bar"></div><div class="loader__bar"></div>
   </div>
   <sebm-google-map
+    #gm
     [latitude]="lat"
     [longitude]="lng"
     [zoom]="zoom"
@@ -36,9 +35,12 @@ interface marker {
       *ngFor="let marker of markers; let i = index"
       [latitude]="marker.lat"
       [longitude]="marker.lng"
-      [iconUrl]="icon">
+      [iconUrl]="icon"
+      (markerClick)="gm.lastOpen?.close(); gm.lastOpen = infoWindow">
 
-      <sebm-google-map-info-window class="brewery-info">
+      <sebm-google-map-info-window
+        class="brewery-info"
+        #infoWindow>
         <h3>{{ marker.name }}</h3>
         <p>{{ marker.address }}<br>
         {{ marker.city }} WA, {{ marker.zip }}</p>
@@ -56,7 +58,7 @@ export class MapDashboardComponent {
   zoom: number = 12;
   streetView: boolean = false;
   scrollwheel: boolean = false;
-  breweries: FirebaseListObservable<any> ;
+  breweries: FirebaseListObservable<any>;
   data = [];
   markers: marker[] = [];
   icon = {
@@ -65,6 +67,28 @@ export class MapDashboardComponent {
     anchor: {x: 12, y: 30}
   };
   style = [{"featureType":"all","elementType":"geometry","stylers":[{"color":"#444444"}]},{"featureType":"all","elementType":"labels","stylers":[{"color":"#373737"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text.fill","stylers":[{"color":"#7f7f7f"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"color":"#252525"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#373737"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#81ac54"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#383838"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#383838"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#646464"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#252525"}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]}];
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    af: AngularFire
+  ) {
+    this.route.params.subscribe((params) => {
+      if (params['id']){
+        this.breweries = af.database.list('/Breweries/'+params['id'], { preserveSnapshot: true });
+      } else {
+        this.breweries = af.database.list('/Breweries', { preserveSnapshot: true});
+      }
+      this.breweries.subscribe(
+        snapshots => {
+          this.isLoading = false;
+          snapshots.forEach(snapshot => {
+            this.data.push(snapshot.val());
+          });
+          this.pushMarkers();
+        });
+    });
+  }
 
   pushMarkers() {
     if ( 'string' === typeof(this.data[0]) ) {
@@ -93,27 +117,5 @@ export class MapDashboardComponent {
         });
       });
     }
-  }
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    af: AngularFire
-  ) {
-    this.route.params.subscribe((params) => {
-      if (params['id']){
-        this.breweries = af.database.list('/Breweries/'+params['id'], { preserveSnapshot: true });
-      } else {
-        this.breweries = af.database.list('/Breweries', { preserveSnapshot: true});
-      }
-      this.breweries.subscribe(
-        snapshots => {
-          this.isLoading = false;
-          snapshots.forEach(snapshot => {
-            this.data.push(snapshot.val());
-          });
-          this.pushMarkers();
-        });
-    });
   }
 }
