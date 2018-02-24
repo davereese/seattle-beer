@@ -8,7 +8,7 @@ import { Brewery } from '../../models/brewery.interface';
   template: `
     <div class="brewery-detail">
       <span class="brewery-detail__number">{{ 1 + index }}</span>
-      <h2 class="brewery-detail__title">{{ detail.name }}</h2>
+      <h2 class="brewery-detail__title"><a [routerLink]="'/map/'+detail.$key">{{ detail.name }}</a></h2>
       <p>{{ detail.address }}<br>
       {{ detail.city }} WA, {{ detail.zip }}</p>
       <p class="brewery-detail__meta"><a href="{{ detail.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{detail.address}},{{detail.city}},WA,{{detail.zip}}" target="_blank">Directions</a></p>
@@ -20,5 +20,5 @@ export class BreweryDetailComponent {
   detail: Brewery;
 
   @Input()
-  index: Number;
+  index: number;
 }

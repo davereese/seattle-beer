@@ -49,6 +49,15 @@
     @media (min-width: $screen-sm) {
       font-size: 20px;
     }
+
+    a {
+      color: $orange;
+
+      &:hover,
+      &:focus {
+        color: darken($orange, 5%);
+      }
+    }
   }
 
   &__meta {
