@@ -47,7 +47,7 @@ interface marker {
         <h3>{{ marker.name }}</h3>
         <p>{{ marker.address }}<br>
         {{ marker.city }} WA, {{ marker.zip }}</p>
-        <p class="brewery-detail__meta"><a href="{{ marker.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{marker.address}},{{marker.city}},WA,{{marker.zip}}" target="_blank">Directions</a></p>
+        <p class="brewery-detail__meta"><a href="{{ marker.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{lat}},{{lng}}/{{marker.address}},{{marker.city}},WA,{{marker.zip}}" target="_blank">Directions</a></p>
       </sebm-google-map-info-window>
 
     </sebm-google-map-marker>

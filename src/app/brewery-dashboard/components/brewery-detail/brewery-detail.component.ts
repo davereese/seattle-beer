@@ -11,7 +11,7 @@ import { Brewery } from '../../models/brewery.interface';
       <h2 class="brewery-detail__title"><a [routerLink]="'/map/'+detail.$key">{{ detail.name }}</a></h2>
       <p>{{ detail.address }}<br>
       {{ detail.city }} WA, {{ detail.zip }}</p>
-      <p class="brewery-detail__meta"><a href="{{ detail.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{detail.address}},{{detail.city}},WA,{{detail.zip}}" target="_blank">Directions</a></p>
+      <p class="brewery-detail__meta"><a href="{{ detail.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir//{{detail.address}},{{detail.city}},WA,{{detail.zip}}" target="_blank">Directions</a></p>
     </div>
   `
 })
