@@ -7,11 +7,13 @@ import { Brewery } from '../../models/brewery.interface';
 interface marker {
 	lat: number,
 	lng: number,
-  name: string,
-  address: string,
-  city: string,
-  zip: number,
-  url: string
+  name?: string,
+  address?: string,
+  city?: string,
+  zip?: number,
+  url?: string,
+  icon?: {},
+  openInfoWindow?: boolean,
 }
 
 @Component({
@@ -35,7 +37,8 @@ interface marker {
       *ngFor="let marker of markers; let i = index"
       [latitude]="marker.lat"
       [longitude]="marker.lng"
-      [iconUrl]="icon"
+      [iconUrl]="marker.icon ? marker.icon : icon"
+      [openInfoWindow]="marker.openInfoWindow"
       (markerClick)="gm.lastOpen?.close(); gm.lastOpen = infoWindow">
 
       <sebm-google-map-info-window
@@ -51,7 +54,7 @@ interface marker {
   </sebm-google-map>
   `
 })
-export class MapDashboardComponent {
+export class MapDashboardComponent implements OnInit {
   isLoading: boolean = true;
   lat: number = 47.6062;
   lng: number = -122.3321;
@@ -90,6 +93,16 @@ export class MapDashboardComponent {
     });
   }
 
+  ngOnInit() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.longitude;
+        this.pushCenterMarker();
+      });
+    }
+  }
+
   pushMarkers() {
     if ( 'string' === typeof(this.data[0]) ) {
       this.markers.push({
@@ -99,7 +112,8 @@ export class MapDashboardComponent {
         address: this.data[0],
         city: this.data[1],
         zip: this.data[7],
-        url: this.data[6]
+        url: this.data[6],
+        openInfoWindow: true,
       });
       // center map on marker
       this.lat = Number(this.data[2]);
@@ -113,9 +127,24 @@ export class MapDashboardComponent {
           address: element.address,
           city: element.city,
           zip: element.zip,
-          url: element.url
+          url: element.url,
+          openInfoWindow: true,
         });
       });
     }
+  }
+
+  pushCenterMarker() {
+    this.markers.push({
+      lat: Number(this.lat),
+      lng: Number(this.lng),
+      icon: {
+        url: '../assets/images/location_marker.svg',
+        size: {width: 24, height: 24},
+        scaledSize: {width: 24, height: 24},
+        anchor: {x: 12, y: 24},
+      },
+      openInfoWindow: false,
+    });
   }
 }
