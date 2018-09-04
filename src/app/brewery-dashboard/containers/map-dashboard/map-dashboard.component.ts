@@ -12,6 +12,7 @@ interface marker {
   city?: string,
   zip?: number,
   url?: string,
+  tags?: Array<string>,
   icon?: {},
   openInfoWindow?: boolean,
 }
@@ -47,6 +48,7 @@ interface marker {
         <h3>{{ marker.name }}</h3>
         <p>{{ marker.address }}<br>
         {{ marker.city }} WA, {{ marker.zip }}</p>
+        <tag *ngFor="let tag of marker.tags" [tag]="tag"></tag>
         <p class="brewery-detail__meta"><a href="{{ marker.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{lat}},{{lng}}/{{marker.address}},{{marker.city}},WA,{{marker.zip}}" target="_blank">Directions</a></p>
       </sebm-google-map-info-window>
 
@@ -104,7 +106,7 @@ export class MapDashboardComponent implements OnInit {
   }
 
   pushMarkers() {
-    if ( 'string' === typeof(this.data[0]) ) {
+    if ( 'string' === typeof(this.data[0])) {
       this.markers.push({
         lat: Number(this.data[2]),
         lng: Number(this.data[3]),
@@ -120,16 +122,21 @@ export class MapDashboardComponent implements OnInit {
       this.lng = Number(this.data[3]);
     } else {
       this.data.forEach(element => {
-        this.markers.push({
-          lat: Number(element.latitude),
-          lng: Number(element.longitude),
-          name: element.name,
-          address: element.address,
-          city: element.city,
-          zip: element.zip,
-          url: element.url,
-          openInfoWindow: true,
-        });
+        // if brewery has a lat and long, add it to the map
+        if (element.latitude && element.longitude) {
+          let tags: Array<string> = element.tags.split(",");
+          this.markers.push({
+            lat: Number(element.latitude),
+            lng: Number(element.longitude),
+            name: element.name,
+            address: element.address,
+            city: element.city,
+            zip: element.zip,
+            tags: tags,
+            url: element.url,
+            openInfoWindow: true,
+          });
+        }
       });
     }
   }

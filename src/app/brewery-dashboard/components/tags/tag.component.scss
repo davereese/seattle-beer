@@ -1,0 +1,13 @@
+@import '../../../../styles/variables.scss';
+
+.tag {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 3px;
+  background-color: $gray-light;
+  font-size: 12px;
+
+  &.new {
+    background-color: $yellow;
+  }
+}

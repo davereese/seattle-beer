@@ -30,6 +30,7 @@ import { Brewery } from '../../models/brewery.interface';
 export class ListDashboardComponent {
   breweries: FirebaseListObservable<any>;
   isLoading: boolean = true;
+  search: string;
 
   constructor(
     af: AngularFire

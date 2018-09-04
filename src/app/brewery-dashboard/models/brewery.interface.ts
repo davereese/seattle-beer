@@ -9,4 +9,5 @@ export interface Brewery {
   url: string;
   latitude: number;
   longitude: number;
+  tags: string;
 };

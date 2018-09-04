@@ -11,6 +11,7 @@ import { ListDashboardComponent } from './containers/list-dashboard/list-dashboa
 
 // components
 import { BreweryDetailComponent } from './components/brewery-detail/brewery-detail.component';
+import { TagComponent } from './components/tags/tag.component';
 
 const routes: Routes = [
   { path: 'map',
@@ -27,6 +28,7 @@ const routes: Routes = [
     MapDashboardComponent,
     ListDashboardComponent,
     BreweryDetailComponent,
+    TagComponent,
     SearchPipe
   ],
   imports: [
