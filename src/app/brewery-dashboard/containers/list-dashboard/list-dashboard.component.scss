@@ -8,7 +8,7 @@
 
   input[type="text"] {
     box-sizing: border-box;
-    margin: 15px 15px 0;
+    margin: 20px 15px 15px;
     padding: 0 15px;
     height: 45px;
     width: calc(100% - 30px);
@@ -25,7 +25,8 @@
     }
 
     @media (min-width: $screen-sm) {
-      margin: 15px;
+      margin: 40px 30px;
+      width: calc(100% - 60px);
       float: left;
     }
   }
