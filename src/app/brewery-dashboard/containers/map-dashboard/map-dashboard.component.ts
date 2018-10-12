@@ -126,7 +126,7 @@ export class MapDashboardComponent implements OnInit {
       this.data.forEach(element => {
         // if brewery has a lat and long, add it to the map
         if (element.latitude && element.longitude) {
-          let tags: Array<string> = element.tags.split(",");
+          let tags: Array<string> = element.tags.length > 0 ? element.tags.split(",") : null;
           this.markers.push({
             lat: Number(element.latitude),
             lng: Number(element.longitude),
