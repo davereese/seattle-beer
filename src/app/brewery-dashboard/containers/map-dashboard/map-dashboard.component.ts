@@ -58,6 +58,7 @@ interface marker {
 })
 export class MapDashboardComponent implements OnInit {
   isLoading: boolean = true;
+  single: boolean = false;
   lat: number = 47.6062;
   lng: number = -122.3321;
   zoom: number = 12;
@@ -80,6 +81,7 @@ export class MapDashboardComponent implements OnInit {
   ) {
     this.route.params.subscribe((params) => {
       if (params['id']){
+        this.single = true;
         this.breweries = af.database.list('/Breweries/'+params['id'], { preserveSnapshot: true });
       } else {
         this.breweries = af.database.list('/Breweries', { preserveSnapshot: true});
@@ -96,7 +98,7 @@ export class MapDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if ("geolocation" in navigator) {
+    if ("geolocation" in navigator && !this.single) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
@@ -113,8 +115,8 @@ export class MapDashboardComponent implements OnInit {
         name: this.data[4],
         address: this.data[0],
         city: this.data[1],
-        zip: this.data[7],
-        url: this.data[6],
+        zip: this.data[8],
+        url: this.data[7],
         openInfoWindow: true,
       });
       // center map on marker
