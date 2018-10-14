@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 import { Brewery } from '../../models/brewery.interface';
 
@@ -64,7 +65,7 @@ export class MapDashboardComponent implements OnInit {
   zoom: number = 12;
   streetView: boolean = false;
   scrollwheel: boolean = false;
-  breweries: FirebaseListObservable<any>;
+  breweries: Observable<any[]>;
   data = [];
   markers: marker[] = [];
   icon = {
@@ -77,14 +78,14 @@ export class MapDashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    af: AngularFire
+    af: AngularFirestore
   ) {
     this.route.params.subscribe((params) => {
       if (params['id']){
         this.single = true;
-        this.breweries = af.database.list('/Breweries/'+params['id'], { preserveSnapshot: true });
+        this.breweries = af.collection('/Breweries/'+params['id']).valueChanges();
       } else {
-        this.breweries = af.database.list('/Breweries', { preserveSnapshot: true});
+        this.breweries = af.collection('/Breweries').valueChanges();
       }
       this.breweries.subscribe(
         snapshots => {
@@ -92,7 +93,7 @@ export class MapDashboardComponent implements OnInit {
           snapshots.forEach(snapshot => {
             this.data.push(snapshot.val());
           });
-          this.pushMarkers();
+          // this.pushMarkers();
         });
     });
   }
@@ -102,7 +103,7 @@ export class MapDashboardComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
-        this.pushCenterMarker();
+        // this.pushCenterMarker();
       });
     }
   }

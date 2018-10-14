@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 import { Brewery } from '../../models/brewery.interface';
 
@@ -28,14 +29,14 @@ import { Brewery } from '../../models/brewery.interface';
   `
 })
 export class ListDashboardComponent {
-  breweries: FirebaseListObservable<any>;
+  breweries: Observable<any[]>;
   isLoading: boolean = true;
   search: string;
 
   constructor(
-    af: AngularFire
+    af: AngularFirestore
   ) {
-    this.breweries = af.database.list('/Breweries');
+    this.breweries = af.collection('/Breweries').valueChanges();
     this.breweries.subscribe(complete => this.isLoading = false);
   }
 }

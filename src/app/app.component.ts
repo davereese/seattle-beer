@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, Event } from '@angular/router';
 
 interface Nav {
   link: string,
@@ -33,7 +33,7 @@ export class AppComponent {
 
   constructor(private router: Router) {
     router.events.subscribe((val) => {
-        this.currentPage = val.url;
+        this.currentPage = val['url'];
     });
   }
 }
