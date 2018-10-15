@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators/map';
+import 'rxjs/add/operator/map';
 
 import { Brewery } from '../../models/brewery.interface';
 
@@ -13,7 +16,7 @@ interface marker {
   zip?: number,
   url?: string,
   tags?: Array<string>,
-  icon?: {},
+  icon: {},
   openInfoWindow?: boolean,
 }
 
@@ -24,7 +27,7 @@ interface marker {
   <div class="loader" *ngIf="isLoading">
     <div class="loader__bar"></div><div class="loader__bar"></div><div class="loader__bar"></div>
   </div>
-  <sebm-google-map
+  <agm-map
     #gm
     [latitude]="lat"
     [longitude]="lng"
@@ -32,28 +35,28 @@ interface marker {
     [styles]="style"
     [streetViewControl]="streetView"
     [scrollwheel]="scrollwheel"
-    class="map-container">
-
-    <sebm-google-map-marker
+    class="map-container"
+  >
+    <agm-marker
       *ngFor="let marker of markers; let i = index"
       [latitude]="marker.lat"
       [longitude]="marker.lng"
-      [iconUrl]="marker.icon ? marker.icon : icon"
+      [iconUrl]="marker.icon"
       [openInfoWindow]="marker.openInfoWindow"
-      (markerClick)="gm.lastOpen?.close(); gm.lastOpen = infoWindow">
-
-      <sebm-google-map-info-window
+      (markerClick)="gm.lastOpen?.close(); gm.lastOpen = infoWindow"
+    >
+      <agm-info-window
         class="brewery-info"
-        #infoWindow>
+        #infoWindow
+      >
         <h3>{{ marker.name }}</h3>
         <p>{{ marker.address }}<br>
         {{ marker.city }} WA, {{ marker.zip }}</p>
         <tag *ngFor="let tag of marker.tags" [tag]="tag"></tag>
-        <p class="brewery-detail__meta"><a href="{{ marker.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{lat}},{{lng}}/{{marker.address}},{{marker.city}},WA,{{marker.zip}}" target="_blank">Directions</a></p>
-      </sebm-google-map-info-window>
-
-    </sebm-google-map-marker>
-  </sebm-google-map>
+        <p class="brewery-detail__meta"><a href="{{ marker.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{marker.address}},{{marker.city}},WA,{{marker.zip}}" target="_blank">Directions</a></p>
+      </agm-info-window>
+    </agm-marker>
+  </agm-map>
   `
 })
 export class MapDashboardComponent implements OnInit {
@@ -64,33 +67,36 @@ export class MapDashboardComponent implements OnInit {
   zoom: number = 12;
   streetView: boolean = false;
   scrollwheel: boolean = false;
-  breweries: FirebaseListObservable<any>;
+  breweries: Observable<any[]>;
   data = [];
   markers: marker[] = [];
-  icon = {
-    url: '../assets/images/marker2-1.svg',
-    scaledSize: {width: 24, height: 30},
-    anchor: {x: 12, y: 30}
-  };
   style = [{"featureType":"all","elementType":"geometry","stylers":[{"color":"#444444"}]},{"featureType":"all","elementType":"labels","stylers":[{"color":"#373737"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text.fill","stylers":[{"color":"#7f7f7f"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"color":"#252525"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#373737"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#81ac54"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#383838"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#383838"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#646464"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#252525"}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]}];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    af: AngularFire
+    af: AngularFireDatabase
   ) {
     this.route.params.subscribe((params) => {
       if (params['id']){
         this.single = true;
-        this.breweries = af.database.list('/Breweries/'+params['id'], { preserveSnapshot: true });
+        this.breweries = af.list('/Breweries/'+params['id']).snapshotChanges().pipe(
+          map(actions =>
+            actions.map(a => ({ key: a.key, ...a.payload.val() }))
+          )
+        );
       } else {
-        this.breweries = af.database.list('/Breweries', { preserveSnapshot: true});
+        this.breweries = af.list('/Breweries').snapshotChanges().pipe(
+          map(actions =>
+            actions.map(a => ({ key: a.key, ...a.payload.val() }))
+          )
+        );
       }
       this.breweries.subscribe(
         snapshots => {
           this.isLoading = false;
           snapshots.forEach(snapshot => {
-            this.data.push(snapshot.val());
+            this.data.push(snapshot);
           });
           this.pushMarkers();
         });
@@ -118,6 +124,11 @@ export class MapDashboardComponent implements OnInit {
         zip: this.data[8],
         url: this.data[7],
         openInfoWindow: true,
+        icon: {
+          url: '../assets/images/marker2-1.svg',
+          scaledSize: {width: 24, height: 30},
+          anchor: {x: 12, y: 30}
+        }
       });
       // center map on marker
       this.lat = Number(this.data[2]);
@@ -137,6 +148,11 @@ export class MapDashboardComponent implements OnInit {
             tags: tags,
             url: element.url,
             openInfoWindow: true,
+            icon: {
+              url: '../assets/images/marker2-1.svg',
+              scaledSize: {width: 24, height: 30},
+              anchor: {x: 12, y: 30}
+            }
           });
         }
       });

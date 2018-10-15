@@ -33,7 +33,7 @@ export class AppComponent {
 
   constructor(private router: Router) {
     router.events.subscribe((val) => {
-        this.currentPage = val.url;
+        this.currentPage = router.url;
     });
   }
 }

@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { AngularFireModule } from 'angularfire2';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { firebaseCreds } from '../../firebase/firebase_credentials';
 
 import { BreweryDashboardModule } from './brewery-dashboard/brewery-dashboard.module';
@@ -24,7 +25,8 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forRoot(routes),
     BreweryDashboardModule,
-    AngularFireModule.initializeApp(firebaseCreds)
+    AngularFireModule.initializeApp(firebaseCreds),
+    AngularFireDatabaseModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
