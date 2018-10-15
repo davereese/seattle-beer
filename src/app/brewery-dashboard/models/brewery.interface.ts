@@ -1,5 +1,5 @@
 export interface Brewery {
-  id: number;
+  key: number;
   $key?: number;
   name: string;
   shortName: string;

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators/map';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -16,10 +17,10 @@ import { Brewery } from './brewery-dashboard/models/brewery.interface';
           This is Seattle. Home to
           <a routerLink="/list">{{ breweriesCount || '100' }}</a>
           PNW breweries. From
-          <a [routerLink]="'map/'+brewery1?.id">{{ brewery1?.shortName }}</a> to
-          <a [routerLink]="'map/'+brewery2?.id">{{ brewery2?.shortName }}</a>,
-          <a [routerLink]="'map/'+brewery3?.id">{{ brewery3?.shortName }}</a> to
-          <a [routerLink]="'map/'+brewery4?.id">{{ brewery4?.shortName }}</a>,
+          <a [routerLink]="'map/'+brewery1?.key">{{ brewery1?.shortName }}</a> to
+          <a [routerLink]="'map/'+brewery2?.key">{{ brewery2?.shortName }}</a>,
+          <a [routerLink]="'map/'+brewery3?.key">{{ brewery3?.shortName }}</a> to
+          <a [routerLink]="'map/'+brewery4?.key">{{ brewery4?.shortName }}</a>,
           we'll help you find them all.
         </h1>
       </div>
@@ -53,17 +54,19 @@ export class HomeComponent {
   brewery4: Brewery;
 
   constructor(
-    af: AngularFirestore
+    af: AngularFireDatabase
   ) {
-    this.breweries = af.collection('/Breweries').valueChanges();
+    this.breweries = af.list('/Breweries').snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => ({ key: a.key, ...a.payload.val() }))
+      )
+    );
     this.breweries.map(list => list.length).subscribe(length => this.breweriesCount = length);
 
     this.breweries.subscribe( snapshots => {
           snapshots = this.shuffle(snapshots);
           snapshots.forEach(snapshot => {
-            const tempSnapshot = snapshot.val();
-            tempSnapshot.id = snapshot.key;
-            this.data.push(tempSnapshot);
+            this.data.push(snapshot);
           });
           this.brewery1 = this.data[0];
           this.brewery2 = this.data[1];

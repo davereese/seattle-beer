@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 
 import { Brewery } from '../../models/brewery.interface';
@@ -25,36 +25,7 @@ interface marker {
   <div class="loader" *ngIf="isLoading">
     <div class="loader__bar"></div><div class="loader__bar"></div><div class="loader__bar"></div>
   </div>
-  <sebm-google-map
-    #gm
-    [latitude]="lat"
-    [longitude]="lng"
-    [zoom]="zoom"
-    [styles]="style"
-    [streetViewControl]="streetView"
-    [scrollwheel]="scrollwheel"
-    class="map-container">
 
-    <sebm-google-map-marker
-      *ngFor="let marker of markers; let i = index"
-      [latitude]="marker.lat"
-      [longitude]="marker.lng"
-      [iconUrl]="marker.icon ? marker.icon : icon"
-      [openInfoWindow]="marker.openInfoWindow"
-      (markerClick)="gm.lastOpen?.close(); gm.lastOpen = infoWindow">
-
-      <sebm-google-map-info-window
-        class="brewery-info"
-        #infoWindow>
-        <h3>{{ marker.name }}</h3>
-        <p>{{ marker.address }}<br>
-        {{ marker.city }} WA, {{ marker.zip }}</p>
-        <tag *ngFor="let tag of marker.tags" [tag]="tag"></tag>
-        <p class="brewery-detail__meta"><a href="{{ marker.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{lat}},{{lng}}/{{marker.address}},{{marker.city}},WA,{{marker.zip}}" target="_blank">Directions</a></p>
-      </sebm-google-map-info-window>
-
-    </sebm-google-map-marker>
-  </sebm-google-map>
   `
 })
 export class MapDashboardComponent implements OnInit {
@@ -78,14 +49,14 @@ export class MapDashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    af: AngularFirestore
+    af: AngularFireDatabase
   ) {
     this.route.params.subscribe((params) => {
       if (params['id']){
         this.single = true;
-        this.breweries = af.collection('/Breweries/'+params['id']).valueChanges();
+        this.breweries = af.list('/Breweries/'+params['id']).valueChanges();
       } else {
-        this.breweries = af.collection('/Breweries').valueChanges();
+        this.breweries = af.list('/Breweries').valueChanges();
       }
       this.breweries.subscribe(
         snapshots => {
