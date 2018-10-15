@@ -9,7 +9,7 @@ import { Brewery } from '../../models/brewery.interface';
     <div class="brewery-detail">
       <span class="brewery-detail__number">{{ 1 + index }}</span>
       <h2 class="brewery-detail__title">
-        <a [routerLink]="'/map/'+detail.$key" *ngIf="detail.latitude && detail.longitude">{{ detail.name }}</a>
+        <a [routerLink]="'/map/'+detail.key" *ngIf="detail.latitude && detail.longitude">{{ detail.name }}</a>
         <span *ngIf="!detail.latitude && !detail.longitude">{{ detail.name }}</span>
       </h2>
       <p>{{ detail.address }}<br>

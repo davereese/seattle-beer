@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators/map';
+import 'rxjs/add/operator/map';
 
 import { Brewery } from '../../models/brewery.interface';
 
@@ -39,7 +41,11 @@ export class ListDashboardComponent {
   constructor(
     af: AngularFireDatabase
   ) {
-    this.breweries = af.list('/Breweries').valueChanges();
+    this.breweries = af.list('/Breweries').snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => ({ key: a.key, ...a.payload.val() }))
+      )
+    );
     this.breweries.subscribe(complete => this.isLoading = false);
   }
 }

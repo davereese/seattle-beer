@@ -80,11 +80,7 @@ export class MapDashboardComponent implements OnInit {
     this.route.params.subscribe((params) => {
       if (params['id']){
         this.single = true;
-        this.breweries = af.list('/Breweries/'+params['id']).snapshotChanges().pipe(
-          map(actions =>
-            actions.map(a => ({ key: a.key, ...a.payload.val() }))
-          )
-        );
+        this.breweries = af.list('/Breweries/'+params['id']).valueChanges();
       } else {
         this.breweries = af.list('/Breweries').snapshotChanges().pipe(
           map(actions =>
