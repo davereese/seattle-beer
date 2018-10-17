@@ -43,7 +43,7 @@ interface marker {
       [longitude]="marker.lng"
       [iconUrl]="marker.icon"
       [openInfoWindow]="marker.openInfoWindow"
-      (markerClick)="gm.lastOpen?.close(); gm.lastOpen = infoWindow"
+      (markerClick)="select_marker(infoWindow)"
     >
       <agm-info-window
         class="brewery-info"
@@ -60,6 +60,7 @@ interface marker {
   `
 })
 export class MapDashboardComponent implements OnInit {
+  previous_info_window = null;
   isLoading: boolean = true;
   single: boolean = false;
   lat: number = 47.6062;
@@ -109,7 +110,16 @@ export class MapDashboardComponent implements OnInit {
     }
   }
 
-  pushMarkers() {
+  public select_marker(infoWindow) {
+    if (this.previous_info_window == null) {
+      this.previous_info_window = infoWindow;
+    } else {
+      this.previous_info_window.close();
+    }
+    this.previous_info_window = infoWindow;
+  }
+
+  private pushMarkers() {
     if ( 'string' === typeof(this.data[0])) {
       this.markers.push({
         lat: Number(this.data[2]),
@@ -155,7 +165,7 @@ export class MapDashboardComponent implements OnInit {
     }
   }
 
-  pushCenterMarker() {
+  private pushCenterMarker() {
     this.markers.push({
       lat: Number(this.lat),
       lng: Number(this.lng),
