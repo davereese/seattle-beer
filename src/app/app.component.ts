@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 interface Nav {
   link: string,
   name: string,
-  image: string,
+  image?: string,
   exact: boolean
 }
 

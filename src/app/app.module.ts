@@ -7,6 +7,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { firebaseCreds } from '../../firebase/firebase_credentials';
 
 import { BreweryDashboardModule } from './brewery-dashboard/brewery-dashboard.module';
+import { LoginModule } from './login/login.module';
 
 import { HomeComponent } from './home.component';
 import { AppComponent } from './app.component';
@@ -25,6 +26,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forRoot(routes),
     BreweryDashboardModule,
+    LoginModule,
     AngularFireModule.initializeApp(firebaseCreds),
     AngularFireDatabaseModule,
   ],

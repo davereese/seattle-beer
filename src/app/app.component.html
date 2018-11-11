@@ -4,16 +4,23 @@
       <a routerLink="/"
         routerLinkActive
         #rla="routerLinkActive"
-        [routerLinkActiveOptions]="{exact: true}">
+        [routerLinkActiveOptions]="{exact: true}"
+      >
         <img *ngIf="!rla.isActive" alt="Seattle Beer" src="assets/images/seattle_beer_main_logo_v2.svg">
         <img *ngIf="rla.isActive" alt="Seattle Beer" src="assets/images/seattle_beer_main_logo_darker_v2.svg">
       </a>
     </div>
+    <a *ngIf="rla.isActive" class="home-login" [routerLink]="'/login'">Login</a>
     <ul *ngIf="!rla.isActive">
       <li
-        *ngFor="let item of nav">
-        <a [routerLink]="item.link">
+        *ngFor="let item of nav"
+        [ngClass]="{'just-text': !item.image}"
+      >
+        <a [routerLink]="item.link" *ngIf="item.image">
           {{ item.name }}<img [src]="item.image" [alt]="item.name">
+        </a>
+        <a [routerLink]="item.link" *ngIf="!item.image">
+          {{ item.name }}
         </a>
       </li>
     </ul>
