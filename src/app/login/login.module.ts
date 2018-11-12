@@ -21,7 +21,6 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forChild(routes),
   ],
-  providers: [
-  ]
+  providers: []
 })
 export class LoginModule { }
