@@ -15,7 +15,7 @@ import { Brewery } from '../../models/brewery.interface';
       type="text"
       placeholder="Search by brewery name"
       name="search"
-      autocomplete="false"
+      autocomplete="off"
       [(ngModel)]="search"
     />
     <div class="list-container">

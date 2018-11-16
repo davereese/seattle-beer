@@ -28,7 +28,7 @@ export class LoginComponent {
   signInWithGoogle() {
     this.authService.signInWithGoogle()
     .then((res) => {
-        this.router.navigate([''])
+        this.router.navigateByUrl('')
       })
     .catch((err) => console.log(err));
   }
