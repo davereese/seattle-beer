@@ -20,7 +20,10 @@ import { AuthService } from '../../../services/auth.service';
 export class LoginComponent {
   // variables
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   signInWithGoogle() {
     this.authService.signInWithGoogle()

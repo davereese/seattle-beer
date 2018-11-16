@@ -10,4 +10,5 @@ export interface Brewery {
   latitude: number;
   longitude: number;
   tags: string;
+  visited?: boolean;
 };

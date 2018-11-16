@@ -39,7 +39,6 @@ const routes: Routes = [
       apiKey: 'AIzaSyDCyIV6cqUIhjtQHeemH4X9eAABSx22sd4'
     })
   ],
-  providers: [
-  ]
+  providers: []
 })
 export class BreweryDashboardModule { }

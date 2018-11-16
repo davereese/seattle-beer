@@ -27,7 +27,16 @@
   }
 
   &:hover {
-    box-shadow: 0 0 20px rgba($gray-med-2, 0.5);
+    box-shadow: 0 0 20px $gray-med-2;
+  }
+
+  &.visited {
+    background: lighten($yellow, 45%);
+    box-shadow: 0 0 5px rgba($gray-med-2, 0.4), inset 0px 0px 0px 1px lighten($yellow, 20%);
+  }
+
+  &.visited:hover {
+    box-shadow: 0 0 20px $gray-med-2, inset 0px 0px 0px 1px lighten($yellow, 20%);
   }
 
   &__number {
