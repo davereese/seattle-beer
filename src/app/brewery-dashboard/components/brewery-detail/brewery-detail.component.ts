@@ -29,15 +29,15 @@ import { Brewery } from '../../models/brewery.interface';
         <button
           *ngIf="!detail.visited"
           type="button"
-          class="button-check-in"
+          class="brewery-detail__button button-check-in"
           (click)="checkInClick(detail.key)"
         >Check In</button>
         <button
           *ngIf="detail.visited"
           type="button"
-          class="button-reset"
+          class="brewery-detail__button button-reset"
           (click)="resetClick(detail.key)"
-        >reset</button>
+        >Reset</button>
       </div>
     </div>
   `
