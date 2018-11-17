@@ -45,7 +45,7 @@
   &__form {
     z-index: 10;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 20px 40px;
     width: 75%;
     max-width: 500px;
     background-color: $white;
@@ -54,6 +54,49 @@
 
     @media (min-width: $screen-sm) {
       width: 50%;
+    }
+  }
+
+  .btn {
+    margin: 10px 0;
+    padding: 15px 0 15px 70px;
+    width: 220px;
+    background-color: $white;
+    background-size: 25px 25px;
+    background-position: 35px 10px;
+    background-repeat: no-repeat;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba($black, 0.15);
+    text-align: left;
+    font-size: 12px;
+    transition: transform 0.3s, background-color 0.5s;
+
+    &:hover,
+    &:focus {
+      transform: translateY(-3px);
+      cursor: pointer;
+      outline: none;
+    }
+
+    &--google {
+      background-image: url('../../../../assets/images/google.svg');
+
+      &:hover,
+      &:focus {
+        background-color: lighten($gray-light, 10%);
+      }
+    }
+
+    &--email {
+      background-color: $yellow;
+      background-image: url('../../../../assets/images/email-white.svg');
+      box-shadow: 0 2px 5px rgba($brown, 0.5);
+
+      &:hover,
+      &:focus {
+        background-color: lighten($orange, 15%);
+      }
     }
   }
 }

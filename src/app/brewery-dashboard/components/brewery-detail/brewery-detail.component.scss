@@ -91,16 +91,17 @@
     border: 1px solid;
     border-radius: 4px;
     font-size: 12px;
-    font-weight: 100;
+    font-weight: 300;
     background-color: transparent;
-    transition: transform 0.3s, background-color 0.5s, opacity 0.5s;
+    transition: transform 0.3s, background-color 0.5s, opacity 0.5s, color 0.5s;
 
     &.button-check-in {
       border-color: $green-med;
       color: $green-med;
 
       &:hover {
-        background-color: rgba($green-med, 0.1);
+        background-color: $green-med;
+        color: $white;
       }
     }
 
@@ -109,13 +110,13 @@
       color: $orange;
 
       &:hover {
-        background-color: rgba($orange, 0.1);
+        background-color: $orange;
+        color: $white;
       }
     }
 
     &:hover {
       cursor: pointer;
-      // border-color: $gray-med-1;
       transform: translateY(-3px);
     }
   }

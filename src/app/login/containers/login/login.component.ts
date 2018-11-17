@@ -10,9 +10,12 @@ import { AuthService } from '../../../services/auth.service';
   <div class="login">
     <h1 class="login__header">Sign In or Sign Up</h1>
     <div class="login__form">
-      <button type="button" class="btn btn-block" (click)="signInWithGoogle()">
-        <i class="fa fa-google" aria-hidden="true"></i>
-        Log In with Google
+      <button type="button" class="btn btn-block btn--google" (click)="signInWithGoogle()">
+        Sign In with Google
+      </button>
+      <br />
+      <button type="button" class="btn btn-block btn--email" (click)="signInWithEmail()">
+        Sign In with Email
       </button>
     </div>
     <div class="login__background"></div>
@@ -33,5 +36,9 @@ export class LoginComponent {
         this.router.navigateByUrl('')
       })
     .catch((err) => console.log(err));
+  }
+
+  signInWithEmail() {
+
   }
 }
