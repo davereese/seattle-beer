@@ -8,12 +8,14 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['login.component.scss'],
   template: `
   <div class="login">
-    <div class="form-group">
+    <h1 class="login__header">Sign In or Sign Up</h1>
+    <div class="login__form">
       <button type="button" class="btn btn-block" (click)="signInWithGoogle()">
         <i class="fa fa-google" aria-hidden="true"></i>
-        Login with Google
+        Log In with Google
       </button>
     </div>
+    <div class="login__background"></div>
   </div>
   `
 })

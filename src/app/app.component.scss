@@ -12,16 +12,27 @@ nav {
     z-index: 10;
 
     .logo {
-      float: none;
-      margin: 0 auto;
-      padding-left: 0;
+      float: left;
+      margin: 0;
+      padding-left: 15px;
       max-width: 255px;
-      
+
       @media (min-width: $screen-sm) {
-        float: left;
-        margin: 0;
-        padding-left: 15px;
         max-width: 345px;
+      }
+    }
+
+    .home-login {
+      position: absolute;
+      right: 20px;
+      top: 16px;
+      color: $white;
+      text-shadow: 0 0 20px $black;
+      letter-spacing: 1px;
+
+      &:hover,
+      &:focus {
+        color: lighten($yellow, 8%);
       }
     }
   }
@@ -91,6 +102,19 @@ nav {
 
           img {
             opacity: 0;
+          }
+        }
+
+        &.login {
+          transform: translateY(-3px);
+          color: $white;
+          font-weight: 300;
+          font-size: 1em;
+          letter-spacing: 1px;
+
+          &:hover {
+            color: $green-light;
+            cursor: pointer;
           }
         }
       }
