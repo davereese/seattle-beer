@@ -37,6 +37,16 @@ export class AuthService {
     )
   }
 
+  signUpAndInWithEmail(email, password) {
+    const credential = firebase.auth.EmailAuthProvider.credential( email, password );
+    return this._firebaseAuth.auth.createUserWithEmailAndPassword(email, password)
+  }
+
+  signInWithEmail(email, password) {
+    const credential = firebase.auth.EmailAuthProvider.credential( email, password );
+    return this._firebaseAuth.auth.signInWithEmailAndPassword(email, password)
+  }
+
   isLoggedIn() {
     if (this.userDetails == null ) {
       return false;

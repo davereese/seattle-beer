@@ -102,3 +102,75 @@ p {
     }
   }
 }
+
+.btn {
+  margin: 10px 0;
+  padding: 15px 0;
+  width: 220px;
+  background-color: $white;
+  background-size: 25px 25px;
+  background-position: 35px 10px;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba($black, 0.15);
+  text-align: left;
+  font-size: 12px;
+  transition: transform 0.3s, background-color 0.5s;
+
+  &--icon {
+    padding: 15px 0 15px 70px;
+  }
+
+  &:hover,
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-3px);
+  }
+}
+
+.form-group {
+  position: relative;
+  margin: 0 auto;
+  width: 260px;
+
+  label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    transform: translate(15px, 34px) scale(1);
+    font-weight: 400;
+    font-size: 1em;
+    transition: transform 0.3s;
+  }
+
+  input:not([type="checkbox"]) {
+    margin: 30px 0 0;
+    padding: 15px;
+    width: 260px;
+    border-radius: 4px;
+    border: 1px solid $gray-light;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 1em;
+    font-weight: 300;
+
+    &:focus {
+      border-color: $orange;
+
+      & ~ label {
+        transform: translate(0, 0) scale(0.75);
+      }
+    }
+
+    &.ng-touched.ng-valid {
+      & ~ label {
+        transform: translate(0, 0) scale(0.75);
+      }
+    }
+  }
+}
