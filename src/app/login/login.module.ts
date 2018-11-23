@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './containers/login/login.component';
 
 // components
+import { ModalComponent } from 'app/global-components/modal/modal.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent }
@@ -14,7 +15,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,

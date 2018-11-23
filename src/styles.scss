@@ -30,6 +30,14 @@ p {
   }
 }
 
+.heading-no-top {
+  margin-top: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
 .gm-style-iw {
   .agm-info-window-content {
     min-width: 300px;
@@ -107,18 +115,19 @@ p {
   margin: 10px 0;
   padding: 15px 0;
   width: 220px;
-  background-color: $white;
+  background-color: $yellow;
   background-size: 25px 25px;
   background-position: 35px 10px;
   background-repeat: no-repeat;
   border: none;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba($black, 0.15);
-  text-align: left;
+  text-align: center;
   font-size: 12px;
   transition: transform 0.3s, background-color 0.5s;
 
   &--icon {
+    text-align: left;
     padding: 15px 0 15px 70px;
   }
 
@@ -130,6 +139,23 @@ p {
   &:hover {
     cursor: pointer;
     transform: translateY(-3px);
+  }
+
+  &--link {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    box-shadow: none;
+    background-color: transparent;
+    border: none;
+    color: $gray-light;
+
+    &:hover,
+    &:focus {
+      transform: none;
+      text-decoration: underline;
+    }
   }
 }
 

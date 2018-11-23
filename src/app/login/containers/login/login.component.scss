@@ -2,15 +2,14 @@
 @import '../../../../styles/type.scss';
 
 .login {
-  position: relative;
   overflow: hidden;
   height: calc(100vh - 60px);
   min-height: 700px;
 
   &__background {
-    position: absolute;
+    position: fixed;
     z-index: -1;
-    top: -55px;
+    top: 0;
     height: 100vh;
     min-height: 770px;
     width: 100%;
@@ -38,7 +37,7 @@
   }
 
   &__header {
-    z-index: 10;
+    z-index: 5;
     padding-top: 50px;
     margin-top: 0;
     text-align: center;
@@ -49,7 +48,8 @@
   }
 
   &__form {
-    z-index: 10;
+    position: relative;
+    z-index: 5;
     margin: 0 auto;
     padding: 20px 20px;
     width: 75%;
@@ -61,10 +61,21 @@
     @media (min-width: $screen-sm) {
       width: 50%;
     }
+
+    .why {
+      position: absolute;
+      right: 0;
+      top: 34px;
+      color: $gray-light;
+      font-size: 12px;
+      letter-spacing: 1px;
+      transform: translateY(-63px);
+    }
   }
 
   .btn {
     &--google {
+      background-color: $white;
       background-image: url('../../../../assets/images/google.svg');
 
       &:hover,
@@ -225,5 +236,12 @@
         }
       }
     }
+  }
+
+  .policies {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: $gray-light;
   }
 }
