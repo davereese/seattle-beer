@@ -10,13 +10,20 @@
   &__container {
     position: absolute;
     z-index: 10;
-    top: 100px;
-    left: 100px;
-    right: 100px;
+    top: 30px;
+    left: 30px;
+    right: 30px;
     padding: 30px;
-    max-height: calc(100vh - 250px);
+    max-height: calc(100vh - 120px);
     background: $white;
     overflow: scroll;
+
+    @media (min-width: $screen-sm) {
+      top: 100px;
+      left: 100px;
+      right: 100px;
+      max-height: calc(100vh - 250px);
+    }
   }
 
   &__background {

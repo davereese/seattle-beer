@@ -2,7 +2,11 @@
 
 nav {
   background-color: $gray-dark;
-  height: 60px;
+  height: 50px;
+
+  @media (min-width: $screen-sm) {
+    height: 60px;
+  }
 
   &.home {
     position: absolute;
@@ -24,8 +28,8 @@ nav {
 
     .home-login {
       position: absolute;
-      right: 20px;
-      top: 16px;
+      right: 15px;
+      top: 11px;
       color: $white;
       text-shadow: 0 0 20px $black;
       letter-spacing: 1px;
@@ -34,17 +38,23 @@ nav {
       &:focus {
         color: lighten($yellow, 8%);
       }
+
+      @media (min-width: $screen-sm) {
+        right: 20px;
+        top: 16px;
+      }
     }
   }
 
   .logo {
     font-size: 16px;
-    padding: 18px 0 0 15px;
-    max-width: 200px;
+    padding: 13px 0 0 15px;
+    max-width: 150px;
     width: 100%;
     float: left;
 
     @media (min-width: $screen-sm) {
+      padding: 18px 0 0 15px;
       max-width: 345px;
     }
   }
@@ -65,7 +75,7 @@ nav {
       a {
         display: block;
         position: relative;
-        margin-top: 13px;
+        margin-top: 9px;
         margin-left: 10px;
         height: 29px;
         width: 50px;
@@ -106,7 +116,6 @@ nav {
         }
 
         &.login {
-          transform: translateY(-3px);
           color: $white;
           font-weight: 300;
           font-size: 1em;
@@ -115,6 +124,10 @@ nav {
           &:hover {
             color: $green-light;
             cursor: pointer;
+          }
+
+          @media (min-width: $screen-sm) {
+            transform: translateY(-3px);
           }
         }
       }

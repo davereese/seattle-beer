@@ -218,7 +218,7 @@ export class LoginComponent {
 
     <h3>Cookies</h3>
 
-    <p>Some of our business partners may use cookies on our site (for example, advertisers). However, we have no access to or control over these cookies.</p>
+    <p>Some of our business partners may use cookies on our site (for example, advertisers). However, we have no access to or control over these cookies.<br><br></p>
 
     <p><strong>If you feel that we are not abiding by this privacy policy, you should contact us immediately via <a href="mailto:contact.seattlebeer@gmail.com">email</a>.</strong></p>
     `;
