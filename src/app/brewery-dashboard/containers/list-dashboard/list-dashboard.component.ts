@@ -76,9 +76,9 @@ export class ListDashboardComponent {
           )
         );
 
-      const example = combineLatest([this.breweriesObservable, this.userVisitsObservable]);
+      const combinedList = combineLatest([this.breweriesObservable, this.userVisitsObservable]);
 
-      this.visitsSubscription = example.subscribe(val => {
+      this.visitsSubscription = combinedList.subscribe(val => {
           this.breweries = val[0].map((brewery): Brewery => {
             // check to see if the berewery's key is in the userVisits array
             const brewerykey = brewery.key;

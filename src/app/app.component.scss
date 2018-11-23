@@ -37,6 +37,7 @@ nav {
       &:hover,
       &:focus {
         color: lighten($yellow, 8%);
+        cursor: pointer;
       }
 
       @media (min-width: $screen-sm) {
