@@ -56,7 +56,7 @@ export class AuthService {
   }
 
   getUser() {
-    return this.user;
+    return this.user ? this.user : this._firebaseAuth.authState;
   }
 
   logout() {
