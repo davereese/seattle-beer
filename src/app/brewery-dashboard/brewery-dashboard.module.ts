@@ -20,7 +20,8 @@ const routes: Routes = [
       { path: ':id', component: MapDashboardComponent }
     ]
   },
-  { path: 'list', component: ListDashboardComponent }
+  { path: 'list', component: ListDashboardComponent },
+  { path: 'list/visited', component: ListDashboardComponent }
 ];
 
 @NgModule({

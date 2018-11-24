@@ -26,7 +26,10 @@ import { AuthService } from './services/auth.service';
         </h1>
         <h1 *ngIf="userId" class="hidden-xs">
           Welcome<span *ngIf="userName">, {{ userName }}</span>!<br>
-          You have visited {{ visits }} out of all <a routerLink="/list">{{ breweriesCount }}</a> Seattle Breweries. We'll help you find them all
+          You have visited <a routerLink="/list/visited">{{ visits }}</a> out of
+          <a routerLink="/list">{{ breweriesCount }}</a> Seattle Breweries.
+          <span *ngIf="visits < breweriesCount">We'll help you find them all.</span>
+          <span *ngIf="visits == breweriesCount">You found them all!</span>
         </h1>
       </div>
 

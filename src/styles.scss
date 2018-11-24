@@ -200,3 +200,55 @@ p {
     }
   }
 }
+
+input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+}
+
+label.checkbox {
+  position: relative;
+  padding-right: 35px;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  // @extend .hand;
+  word-wrap: none;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 2px rgba($gray-dark, 0.3);
+  }
+}
+
+input[type="checkbox"]:disabled ~ label {
+  cursor: not-allowed;
+
+  &::before {
+    border: 1px solid rgba($gray-dark, 0.15);
+    box-shadow: none;
+  }
+}
+
+input[type="checkbox"]:checked ~ label {
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 17px;
+    height: 17px;
+    border-radius: 2px;
+    background-color: $yellow;
+  }
+}

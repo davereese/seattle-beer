@@ -6,12 +6,40 @@
   padding-top: 1px;
   margin-top: -1px;
 
+  &__filters {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    margin: 0 30px;
+
+    .search-input {
+      width: 100%;
+    }
+
+    .visited-filters {
+      margin: 15px 0;
+      width: 100%;
+    }
+
+    @media (min-width: $screen-sm) {
+      flex-direction: row;
+
+      .search-input {
+        width: 100%;
+      }
+
+      .visited-filters {
+        width: 100%;
+      }
+    }
+  }
+
   input[type="text"] {
     box-sizing: border-box;
-    margin: 20px 15px 15px;
+    margin: 20px 0 15px;
     padding: 0 15px;
     height: 45px;
-    width: calc(100% - 30px);
+    width: 100%;
     outline: none;
     background-color: transparent;
     border: 0;
@@ -25,9 +53,24 @@
     }
 
     @media (min-width: $screen-sm) {
-      margin: 40px 30px;
-      width: calc(100% - 60px);
+      // margin: 40px 30px;
+      width: calc(100% - 30px);
+      margin: 40px 0;
       float: left;
+    }
+  }
+
+  .visited-filters {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: start;
+    box-sizing: border-box;
+    padding: 0 30px;
+    border: none;
+
+    > div {
+      margin-right: 30px;
     }
   }
 
