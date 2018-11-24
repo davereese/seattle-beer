@@ -5,10 +5,11 @@
   padding: 1px 8px;
   margin-right: 5px;
   border-radius: 3px;
-  background-color: $gray-light;
+  background-color: $yellow;
   font-size: 12px;
 
   &.new {
-    background-color: $yellow;
+    background-color: $orange;
+    color: $white;
   }
 }

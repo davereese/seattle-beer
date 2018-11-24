@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { AuthService } from './services/auth.service';
+
 interface Nav {
   link: string,
   name: string,
@@ -14,7 +16,7 @@ interface Nav {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  nav: Nav[] = [
+  public nav: Nav[] = [
     {
       link: '/list',
       name: 'LIST',
@@ -29,9 +31,9 @@ export class AppComponent {
     }
   ];
 
-  currentPage: string;
+  private currentPage: string;
 
-  constructor(private router: Router) {
+  constructor(public authService: AuthService, private router: Router) {
     router.events.subscribe((val) => {
         this.currentPage = router.url;
     });

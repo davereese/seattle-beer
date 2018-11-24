@@ -20,7 +20,8 @@ const routes: Routes = [
       { path: ':id', component: MapDashboardComponent }
     ]
   },
-  { path: 'list', component: ListDashboardComponent }
+  { path: 'list', component: ListDashboardComponent },
+  { path: 'list/visited', component: ListDashboardComponent }
 ];
 
 @NgModule({
@@ -39,7 +40,6 @@ const routes: Routes = [
       apiKey: 'AIzaSyDCyIV6cqUIhjtQHeemH4X9eAABSx22sd4'
     })
   ],
-  providers: [
-  ]
+  providers: []
 })
 export class BreweryDashboardModule { }

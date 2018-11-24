@@ -2,6 +2,7 @@
 @import '../../../../styles/type.scss';
 
 .brewery-detail {
+  $self: &;
   position: relative;
   padding: 15px;
   margin: 15px 15px 0;
@@ -27,7 +28,20 @@
   }
 
   &:hover {
-    box-shadow: 0 0 20px rgba($gray-med-2, 0.5);
+    box-shadow: 0 0 20px $gray-med-2;
+
+    #{ $self }__button {
+      opacity: 1;
+    }
+  }
+
+  &.visited {
+    background: lighten($yellow, 45%);
+    box-shadow: 0 0 5px rgba($gray-med-2, 0.4), inset 0px 0px 0px 1px lighten($yellow, 20%);
+  }
+
+  &.visited:hover {
+    box-shadow: 0 0 20px $gray-med-2, inset 0px 0px 0px 1px lighten($yellow, 20%);
   }
 
   &__number {
@@ -64,6 +78,46 @@
     @media (min-width: $screen-sm) {
       position: absolute;
       bottom: 0;
+    }
+  }
+
+  &__button {
+    position: absolute;
+    bottom: 11px;
+    right: 10px;
+    width: 80px;
+    padding: 5px 0 7px;
+    opacity: 0;
+    border: 1px solid;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 300;
+    background-color: transparent;
+    transition: transform 0.3s, background-color 0.5s, opacity 0.5s, color 0.5s;
+
+    &.button-check-in {
+      border-color: $green-med;
+      color: $green-med;
+
+      &:hover {
+        background-color: $green-med;
+        color: $white;
+      }
+    }
+
+    &.button-reset {
+      border-color: $orange;
+      color: $orange;
+
+      &:hover {
+        background-color: $orange;
+        color: $white;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      transform: translateY(-3px);
     }
   }
 }

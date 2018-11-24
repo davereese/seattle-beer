@@ -1,0 +1,247 @@
+@import '../../../../styles/variables.scss';
+@import '../../../../styles/type.scss';
+
+.login {
+  overflow: hidden;
+  height: calc(100vh - 60px);
+  min-height: 700px;
+
+  &__background {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    height: 100vh;
+    min-height: 770px;
+    width: 100%;
+    background-image: url('../../../../assets/images/seattle-hero3-sm.jpg');
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    background-color: $black;
+    transform: scale(1.03);
+
+    @media (min-width: $screen-sm) {
+      background-image: url('../../../../assets/images/seattle-hero3.jpg');
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom,  rgba(0,0,0,0.30) 0%,rgba(0,0,0,0.90) 75%); /* W3C */
+    }
+  }
+
+  &__header {
+    z-index: 5;
+    padding-top: 50px;
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.4em;
+    color: $white;
+    font-weight: 400;
+    @extend .hand;
+  }
+
+  &__form {
+    position: relative;
+    z-index: 5;
+    margin: 0 auto;
+    padding: 20px 20px;
+    width: 75%;
+    max-width: 500px;
+    background-color: $white;
+    text-align: center;
+    box-shadow: 0 5px 25px rgba($black, 0.8);
+
+    @media (min-width: $screen-sm) {
+      width: 50%;
+    }
+
+    .why {
+      position: absolute;
+      right: 0;
+      top: 34px;
+      color: $gray-light;
+      font-size: 12px;
+      letter-spacing: 1px;
+      transform: translateY(-63px);
+    }
+  }
+
+  .btn {
+    &--google {
+      background-color: $white;
+      background-image: url('../../../../assets/images/google.svg');
+
+      &:hover,
+      &:focus {
+        background-color: lighten($gray-light, 10%);
+      }
+    }
+
+    &--email {
+      background-color: $yellow;
+      background-image: url('../../../../assets/images/email-white.svg');
+      box-shadow: 0 2px 5px rgba($brown, 0.5);
+
+      &:hover,
+      &:focus {
+        background-color: lighten($orange, 15%);
+      }
+    }
+
+    &--submit {
+      margin-top: 30px;
+      padding-left: 0;
+      text-align: center;
+      background-color: $yellow;
+
+      &:hover,
+      &:focus {
+        background-color: lighten($orange, 15%);
+      }
+    }
+  }
+
+  .email-btn-container {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s;
+
+    &.open {
+      max-height: 100px;
+      transition: max-height 0.5s;
+    }
+  }
+
+  form[name="userform"] {
+    position: relative;
+    overflow: hidden;
+    max-height: 0;
+    margin-top: 20px;
+    padding-bottom: 0;
+    border-top: 1px solid $white;
+    transition: padding 0.3s, max-height 0.3s, border-color 0.3s;
+
+    &.open {
+      border-color: $gray-light;
+      max-height: 385px;
+      padding-bottom: 20px;
+      transition: padding 0.3s, max-height 0.5s, border-color 0.5s;
+    }
+
+    button.close {
+      position: absolute;
+      right: 0;
+      top: 15px;
+      width: 25px;
+      height: 25px;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      color: $white;
+      outline: none;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        display: block;
+        top: 14px;
+        left: 0;
+        width: 25px;
+        height: 1px;
+        background-color: $gray-dark;
+      }
+
+      &::before {
+        transform: rotate(45deg);
+      }
+
+      &::after {
+        transform: rotate(-45deg);
+      }
+    }
+
+    p {
+      margin: 20px 0 0;
+    }
+
+    p.error {
+      font-size: 12px;
+      font-weight: 400;
+      color: $orange;
+    }
+
+    .form-group.toggle {
+      margin-top: 15px;
+
+      label {
+        position: relative;
+        top: inherit;
+        transform: none;
+        user-select: none;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    input[type="checkbox"].toggle {
+      display: inline;
+      width: 0;
+      opacity: 0;
+
+      & ~ label {
+        position: relative;
+
+        &::before {
+          content: '';
+          display: inline-block;
+          transform: translateY(12px);
+          margin: 0 10px 0;
+          width: 60px;
+          height: 35px;
+          border-radius: 4px;
+          border: 1px solid $gray-light;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 16px;
+          top: -4px;
+          width: 25px;
+          height: 25px;
+          border-radius: 2px;
+          background-color: $orange-light;
+          box-shadow: 0 2px 5px rgba($black, 0.15);
+          transition: left 0.3s;
+
+          @media (min-width: $screen-sm) {
+            top: -2px;
+          }
+        }
+      }
+
+      &:checked {
+        & ~ label::after {
+          left: 41px;
+        }
+      }
+    }
+  }
+
+  .policies {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: $gray-light;
+  }
+}

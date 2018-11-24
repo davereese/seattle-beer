@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators/map';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { Brewery } from './brewery-dashboard/models/brewery.interface';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ import { Brewery } from './brewery-dashboard/models/brewery.interface';
   template: `
     <div class="home">
       <div class="intro-text">
-        <h1 class="hidden-xs">
+        <h1 *ngIf="!userId" class="hidden-xs">
           This is Seattle. Home to
           <a routerLink="/list">{{ breweriesCount || '100' }}</a>
           PNW breweries. From
@@ -22,6 +23,13 @@ import { Brewery } from './brewery-dashboard/models/brewery.interface';
           <a [routerLink]="'map/'+brewery3?.key">{{ brewery3?.shortName }}</a> to
           <a [routerLink]="'map/'+brewery4?.key">{{ brewery4?.shortName }}</a>,
           we'll help you find them all.
+        </h1>
+        <h1 *ngIf="userId" class="hidden-xs">
+          Welcome<span *ngIf="userName">, {{ userName }}</span>!<br>
+          You have visited <a routerLink="/list/visited">{{ visits }}</a> out of
+          <a routerLink="/list">{{ breweriesCount }}</a> Seattle Breweries.
+          <span *ngIf="visits < breweriesCount">We'll help you find them all.</span>
+          <span *ngIf="visits == breweriesCount">You found them all!</span>
         </h1>
       </div>
 
@@ -47,14 +55,20 @@ import { Brewery } from './brewery-dashboard/models/brewery.interface';
 export class HomeComponent {
   breweriesCount: number
   breweries: Observable<any[]>;
+  visitedBreweries: Observable<any[]>;
+  visitsSubscription: Subscription;
+  visits: number;
   data = [];
   brewery1: Brewery;
   brewery2: Brewery;
   brewery3: Brewery;
   brewery4: Brewery;
+  userId: string;
+  userName: string;
 
   constructor(
-    af: AngularFireDatabase
+    af: AngularFireDatabase,
+    private authService: AuthService,
   ) {
     this.breweries = af.list('/Breweries').snapshotChanges().pipe(
       map(actions =>
@@ -73,6 +87,32 @@ export class HomeComponent {
           this.brewery3 = this.data[2];
           this.brewery4 = this.data[3];
       });
+
+    this.userId = sessionStorage.getItem('uid');
+
+    if (this.userId) {
+      this.authService.getUser().subscribe(
+        (user) => {
+          if (user) {
+            this.userName = user.displayName;
+          } else {
+            this.userId = null;
+            if (this.visitsSubscription) {
+              this.visitsSubscription.unsubscribe();
+            }
+          }
+        }
+      );
+
+      this.visitedBreweries = af.list(`Visits/${this.userId}`).snapshotChanges().pipe(
+        map(actions =>
+          actions.map(a => ({ key: a.key, ...a.payload.val() }))
+        )
+      );
+      this.visitsSubscription = this.visitedBreweries.subscribe(val => {
+        this.visits = val.length;
+      });
+    }
   }
 
   shuffle(array) {
@@ -92,5 +132,11 @@ export class HomeComponent {
     }
 
     return array;
+  }
+
+  ngOnDestroy() {
+    if (this.visitsSubscription) {
+      this.visitsSubscription.unsubscribe();
+    }
   }
 }
