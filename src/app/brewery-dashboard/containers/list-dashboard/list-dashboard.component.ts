@@ -102,7 +102,7 @@ export class ListDashboardComponent {
 
     this.breweriesObservable = af.list('/Breweries').snapshotChanges().pipe(
         map(actions =>
-          actions.map(a => ({ key: a.key, ...a.payload.val() }))
+          actions.map(a => ({ key: a.key, visited: null, ...a.payload.val() }))
         )
       );
 
