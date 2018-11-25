@@ -10,6 +10,10 @@ export class SearchPipe implements PipeTransform {
     }
 
     return value.filter((item) => {
+        if (item.name === 'geolocation') {
+          return true;
+        }
+
       if (item.hasOwnProperty(key)) {
         if (term) {
           const regExp = new RegExp('\\b' + term, 'gi');

@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable } from 'rxjs';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators/map';
 import 'rxjs/add/operator/map';
 
 import { Brewery } from '../../models/brewery.interface';
 
 interface marker {
-	lat: number,
-	lng: number,
+  lat: number,
+  lng: number,
   name?: string,
   address?: string,
   city?: string,
@@ -18,6 +18,8 @@ interface marker {
   tags?: Array<string>,
   icon: {},
   openInfoWindow?: boolean,
+  key?: number,
+  visited?: boolean,
 }
 
 @Component({
@@ -26,6 +28,28 @@ interface marker {
   template: `
   <div class="loader" *ngIf="isLoading">
     <div class="loader__bar"></div><div class="loader__bar"></div><div class="loader__bar"></div>
+  </div>
+  <div class="visited-filters" *ngIf="loggedIn && !single">
+    <div>
+      <input
+        type="checkbox"
+        name="visited"
+        id="visited"
+        [(ngModel)]="visited"
+        (click)="handleVisitClick($event.target.id)"
+      />
+      <label for="visited" class="checkbox">Visited</label>
+    </div>
+    <div>
+      <input
+        type="checkbox"
+        name="unvisited"
+        id="unvisited"
+        [(ngModel)]="unvisited"
+        (click)="handleVisitClick($event.target.id)"
+      />
+      <label for="unvisited" class="checkbox">Unvisited</label>
+    </div>
   </div>
   <agm-map
     #gm
@@ -38,7 +62,7 @@ interface marker {
     class="map-container"
   >
     <agm-marker
-      *ngFor="let marker of markers; let i = index"
+      *ngFor="let marker of markers | searchPipe:'visited':visitedFilter; let i = index"
       [latitude]="marker.lat"
       [longitude]="marker.lng"
       [iconUrl]="marker.icon"
@@ -68,10 +92,22 @@ export class MapDashboardComponent implements OnInit {
   zoom: number = 12;
   streetView: boolean = false;
   scrollwheel: boolean = false;
-  breweries: Observable<any[]>;
+  breweries: Brewery[];
   data = [];
   markers: marker[] = [];
   style = [{"featureType":"all","elementType":"geometry","stylers":[{"color":"#444444"}]},{"featureType":"all","elementType":"labels","stylers":[{"color":"#373737"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text.fill","stylers":[{"color":"#7f7f7f"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"color":"#252525"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#373737"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#81ac54"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#383838"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#383838"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#646464"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#252525"}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]}];
+
+  public loggedIn: boolean = false;
+  public visited: boolean = false;
+  public unvisited: boolean = false;
+  public visitedFilter: string;
+
+  private visitList: AngularFireList<any[]> = null;
+  private breweriesObservable: Observable<any[]>;
+  private userVisitsObservable: Observable<any[]>;
+  private breweriesSubscription: Subscription;
+  private visitsSubscription: Subscription;
+  private userId: string;
 
   constructor(
     private router: Router,
@@ -81,31 +117,68 @@ export class MapDashboardComponent implements OnInit {
     this.route.params.subscribe((params) => {
       if (params['id']){
         this.single = true;
-        this.breweries = af.list('/Breweries/'+params['id']).valueChanges();
+        this.breweriesObservable = af.list('/Breweries/'+params['id']).valueChanges();
       } else {
-        this.breweries = af.list('/Breweries').snapshotChanges().pipe(
+        this.breweriesObservable = af.list('/Breweries').snapshotChanges().pipe(
+          map(actions =>
+            actions.map(a => ({ key: a.key, visited: null, ...a.payload.val() }))
+          )
+        );
+      }
+    });
+
+    this.userId = sessionStorage.getItem('uid');
+
+    if (this.userId) {
+      // if logged in
+      this.loggedIn = true;
+
+      // set fire list
+      this.visitList = af.list(`Visits/${this.userId}`);
+
+      // query observable
+      this.userVisitsObservable = af.list(`Visits/${this.userId}`).snapshotChanges().pipe(
           map(actions =>
             actions.map(a => ({ key: a.key, ...a.payload.val() }))
           )
         );
-      }
-      this.breweries.subscribe(
-        snapshots => {
+
+      const combinedList = combineLatest([this.breweriesObservable, this.userVisitsObservable]);
+
+      this.visitsSubscription = combinedList.subscribe(val => {
+          if ( 'string' !== typeof(val[0][0])) {
+            val[0].map((brewery) => {
+              // check to see if the berewery's key is in the userVisits array
+              const brewerykey = brewery.key;
+              brewery.visited = val[1].some(index => index.key === brewerykey );
+              this.data.push(brewery);
+            });
+          } else {
+            this.data.push(val[0]);
+          }
+          this.pushMarkers();
           this.isLoading = false;
-          snapshots.forEach(snapshot => {
+        });
+    } else {
+      // if not logged in
+      this.breweriesSubscription = this.breweriesObservable.subscribe(complete => {
+          complete.forEach(snapshot => {
             this.data.push(snapshot);
           });
           this.pushMarkers();
+          this.isLoading = false;
         });
-    });
+    }
   }
 
   ngOnInit() {
     if ("geolocation" in navigator && !this.single) {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.longitude;
-        this.pushCenterMarker();
+        window.setTimeout(() => {
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+          this.pushCenterMarker();
+        }, 1000);
       });
     }
   }
@@ -120,16 +193,19 @@ export class MapDashboardComponent implements OnInit {
   }
 
   private pushMarkers() {
-    if ( 'string' === typeof(this.data[0])) {
+    // Single location
+    if ( 'string' === typeof(this.data[0][0])) {
       this.markers.push({
-        lat: Number(this.data[2]),
-        lng: Number(this.data[3]),
-        name: this.data[4],
-        address: this.data[0],
-        city: this.data[1],
-        zip: this.data[8],
-        url: this.data[7],
+        lat: Number(this.data[0][2]),
+        lng: Number(this.data[0][3]),
+        name: this.data[0][4],
+        address: this.data[0][0],
+        city: this.data[0][1],
+        zip: this.data[0][8],
+        tags: this.data[0][6],
+        url: this.data[0][7],
         openInfoWindow: true,
+        visited: null,
         icon: {
           url: '../assets/images/marker2-1.svg',
           scaledSize: {width: 24, height: 30},
@@ -137,13 +213,20 @@ export class MapDashboardComponent implements OnInit {
         }
       });
       // center map on marker
-      this.lat = Number(this.data[2]);
-      this.lng = Number(this.data[3]);
+      this.lat = Number(this.data[0][2]);
+      this.lng = Number(this.data[0][3]);
+    // All locations
     } else {
       this.data.forEach(element => {
         // if brewery has a lat and long, add it to the map
         if (element.latitude && element.longitude) {
-          let tags: Array<string> = element.tags.length > 0 ? element.tags.split(",") : null;
+          const tags: Array<string> = element.tags.length > 0 ? element.tags.split(",") : null;
+          let icon: string;
+          if (element.visited === true) {
+            icon = '../assets/images/marker2-1-visited-2.svg';
+          } else {
+            icon = '../assets/images/marker2-1.svg';
+          }
           this.markers.push({
             lat: Number(element.latitude),
             lng: Number(element.longitude),
@@ -154,8 +237,10 @@ export class MapDashboardComponent implements OnInit {
             tags: tags,
             url: element.url,
             openInfoWindow: true,
+            visited: element.visited,
+            key: element.key,
             icon: {
-              url: '../assets/images/marker2-1.svg',
+              url: icon,
               scaledSize: {width: 24, height: 30},
               anchor: {x: 12, y: 30}
             }
@@ -163,12 +248,14 @@ export class MapDashboardComponent implements OnInit {
         }
       });
     }
+    this.visitedFilter = null;
   }
 
   private pushCenterMarker() {
     this.markers.push({
       lat: Number(this.lat),
       lng: Number(this.lng),
+      name: 'geolocation',
       icon: {
         url: '../assets/images/location_marker.svg',
         size: {width: 24, height: 24},
@@ -177,5 +264,30 @@ export class MapDashboardComponent implements OnInit {
       },
       openInfoWindow: false,
     });
+    // major hack to get the center marker to display initially
+    this.visitedFilter = 'true';
+    window.setTimeout(() => {
+      this.visitedFilter = null;
+    }, 1);
+  }
+
+  public handleVisitClick(target) {
+    if (target === 'visited') {
+      this.unvisited = false;
+      this.visitedFilter = this.visited === false ? 'true' : null;
+    } else if (target === 'unvisited') {
+      this.visited = false;
+      this.visitedFilter = this.unvisited === false ? 'false' : null;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.breweriesSubscription) {
+      this.breweriesSubscription.unsubscribe();
+    }
+
+    if (this.visitsSubscription) {
+      this.visitsSubscription.unsubscribe();
+    }
   }
 }

@@ -29,7 +29,6 @@ import { Brewery } from '../../models/brewery.interface';
             name="visited"
             id="visited"
             [(ngModel)]="visited"
-            [attr.disabled]="visitedFilter === 'false' ? '' : null"
             (click)="handleVisitClick($event.target.id)"
           />
           <label for="visited" class="checkbox">Visited</label>
@@ -40,7 +39,6 @@ import { Brewery } from '../../models/brewery.interface';
             name="unvisited"
             id="unvisited"
             [(ngModel)]="unvisited"
-            [attr.disabled]="visitedFilter === 'true' ? '' : null"
             (click)="handleVisitClick($event.target.id)"
           />
           <label for="unvisited" class="checkbox">Unvisited</label>
@@ -142,19 +140,21 @@ export class ListDashboardComponent {
     }
   }
 
-  handleVisitClick(target) {
+  public handleVisitClick(target) {
     if (target === 'visited') {
+      this.unvisited = false;
       this.visitedFilter = this.visited === false ? 'true' : null;
     } else if (target === 'unvisited') {
+      this.visited = false;
       this.visitedFilter = this.unvisited === false ? 'false' : null;
     }
   }
 
-  handleCheckIn(key) {
+  public handleCheckIn(key) {
     this.visitList.set(key, [true]);
   }
 
-  handleReset(key) {
+  public handleReset(key) {
     this.visitList.remove(key);
   }
 
