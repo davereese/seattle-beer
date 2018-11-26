@@ -62,12 +62,13 @@ interface marker {
     class="map-container"
   >
     <agm-marker
-      *ngFor="let marker of markers | searchPipe:'visited':visitedFilter; let i = index"
+      *ngFor="let marker of markers; let i = index"
       [latitude]="marker.lat"
       [longitude]="marker.lng"
       [iconUrl]="marker.icon"
+      [visible]="visitedFilter === marker.visited || visitedFilter === null || marker.name === 'geolocation'"
       [openInfoWindow]="marker.openInfoWindow"
-      (markerClick)="select_marker(infoWindow)"
+      (markerClick)="selectMarker(infoWindow)"
     >
       <agm-info-window
         class="brewery-info"
@@ -100,7 +101,7 @@ export class MapDashboardComponent implements OnInit {
   public loggedIn: boolean = false;
   public visited: boolean = false;
   public unvisited: boolean = false;
-  public visitedFilter: string;
+  public visitedFilter: boolean = null;
 
   private visitList: AngularFireList<any[]> = null;
   private breweriesObservable: Observable<any[]>;
@@ -183,7 +184,7 @@ export class MapDashboardComponent implements OnInit {
     }
   }
 
-  public select_marker(infoWindow) {
+  public selectMarker(infoWindow) {
     if (this.previous_info_window == null) {
       this.previous_info_window = infoWindow;
     } else {
@@ -248,7 +249,6 @@ export class MapDashboardComponent implements OnInit {
         }
       });
     }
-    this.visitedFilter = null;
   }
 
   private pushCenterMarker() {
@@ -264,20 +264,18 @@ export class MapDashboardComponent implements OnInit {
       },
       openInfoWindow: false,
     });
-    // major hack to get the center marker to display initially
-    this.visitedFilter = 'true';
-    window.setTimeout(() => {
-      this.visitedFilter = null;
-    }, 1);
   }
 
   public handleVisitClick(target) {
+    if (this.previous_info_window !== null) {
+      this.previous_info_window.close();
+    }
     if (target === 'visited') {
       this.unvisited = false;
-      this.visitedFilter = this.visited === false ? 'true' : null;
+      this.visitedFilter = this.visited === false ? true : null;
     } else if (target === 'unvisited') {
       this.visited = false;
-      this.visitedFilter = this.unvisited === false ? 'false' : null;
+      this.visitedFilter = this.unvisited === false ? false : null;
     }
   }
 
