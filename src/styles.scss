@@ -38,6 +38,13 @@ p {
   text-align: center;
 }
 
+// crazy infoWindow positioning hack
+.gm-style-pbc ~ div {
+  > div > div:last-child {
+    top: -28px !important;
+  }
+}
+
 .gm-style-iw {
   .agm-info-window-content {
     min-width: 300px;
