@@ -68,41 +68,62 @@ interface marker {
       [iconUrl]="marker.icon"
       [visible]="visitedFilter === marker.visited || visitedFilter === null || marker.name === 'geolocation'"
       [openInfoWindow]="marker.openInfoWindow"
-      (markerClick)="selectMarker(infoWindow)"
+      (markerClick)="selectMarker(marker)"
     >
-      <agm-info-window
-        class="brewery-info"
-        #infoWindow
-      >
-        <h3>{{ marker.name }}</h3>
-        <p>{{ marker.address }}<br>
-        {{ marker.city }} WA, {{ marker.zip }}</p>
-        <tag *ngFor="let tag of marker.tags" [tag]="tag"></tag>
-        <p class="brewery-detail__meta"><a href="{{ marker.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{marker.address}},{{marker.city}},WA,{{marker.zip}}" target="_blank">Directions</a></p>
-        <div
-          class="visited-toggles"
-          *ngIf="loggedIn"
-        >
-          <button
-            *ngIf="!marker.visited"
-            type="button"
-            class="brewery-detail__button button-check-in"
-            (click)="handleCheckIn(marker.key)"
-          >Check In</button>
-          <button
-            *ngIf="marker.visited"
-            type="button"
-            class="brewery-detail__button button-reset"
-            (click)="handleReset(marker.key)"
-          >Reset</button>
-        </div>
-      </agm-info-window>
     </agm-marker>
+    <agm-info-window
+      class="brewery-info"
+      [latitude]="infoContent.lat"
+      [longitude]="infoContent.lng"
+      [isOpen]="infoOpen"
+      [disableAutoPan]="false"
+      #infoWindow
+    >
+      <button
+        type="button"
+        title="Close Window"
+        class="close"
+        (click)="closeInfoWindow()"
+      >X</button>
+      <h3>{{ infoContent.name }}</h3>
+      <p>{{ infoContent.address }}<br>
+      {{ infoContent.city }} WA, {{ infoContent.zip }}</p>
+      <tag *ngFor="let tag of infoContent.tags" [tag]="tag"></tag>
+      <p class="brewery-detail__meta"><a href="{{ infoContent.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{infoContent.address}},{{infoContent.city}},WA,{{infoContent.zip}}" target="_blank">Directions</a></p>
+      <div class="visited-toggles" *ngIf="loggedIn">
+        <button
+          *ngIf="!infoContent.visited"
+          type="button"
+          class="brewery-detail__button button-check-in"
+          (click)="handleCheckIn(infoContent.key)"
+        >Check In</button>
+        <button
+          *ngIf="infoContent.visited"
+          type="button"
+          class="brewery-detail__button button-reset"
+          (click)="handleReset(infoContent.key)"
+        >Reset</button>
+      </div>
+    </agm-info-window>
   </agm-map>
   `
 })
 export class MapDashboardComponent implements OnInit {
   previous_info_window = null;
+  public infoOpen: boolean = false;
+  public emptyInfoContent = {
+    lat: null,
+    lng: null,
+    name: null,
+    address: null,
+    city: null,
+    zip: null,
+    url: null,
+    tags: [],
+    visited: null,
+    key: null,
+  };
+  public infoContent = this.emptyInfoContent;
   isLoading: boolean = true;
   single: boolean = false;
   lat: number = 47.6062;
@@ -201,11 +222,14 @@ export class MapDashboardComponent implements OnInit {
     }
   }
 
-  public selectMarker(infoWindow) {
-    if (this.previous_info_window !== null) {
-      this.previous_info_window.close();
-    }
-    this.previous_info_window = infoWindow;
+  public selectMarker(marker) {
+    this.infoOpen = true;
+    this.infoContent = marker;
+  }
+
+  public closeInfoWindow() {
+    this.infoOpen = false;
+    this.infoContent = this.emptyInfoContent;
   }
 
   private pushMarkers() {
@@ -283,14 +307,11 @@ export class MapDashboardComponent implements OnInit {
 
   private removeMarker(value) {
     const markerPos = this.markers.map((x) => x.key ).indexOf(value);
-    // @ts-ignore
     this.markers.splice(markerPos);
   }
 
   public handleVisitClick(target) {
-    if (this.previous_info_window !== null) {
-      this.previous_info_window.close();
-    }
+    this.closeInfoWindow();
     if (target === 'visited') {
       this.unvisited = false;
       this.visitedFilter = this.visited === false ? true : null;

@@ -58,6 +58,16 @@ p {
         right: 0;
       }
     }
+
+    button.close {
+      position: absolute;
+      top: 0;
+      right: -3px;
+    }
+  }
+
+  & ~ button[title="Close"] {
+    display: none !important;
   }
 }
 
@@ -163,6 +173,36 @@ p {
       transform: none;
       text-decoration: underline;
     }
+  }
+}
+
+button.close {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: $white;
+  outline: none;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 14px;
+    left: 0;
+    width: 25px;
+    height: 1px;
+    background-color: $gray-dark;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
   }
 }
 
