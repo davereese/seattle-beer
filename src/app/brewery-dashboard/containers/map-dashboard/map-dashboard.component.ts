@@ -223,8 +223,10 @@ export class MapDashboardComponent implements OnInit {
   }
 
   public selectMarker(marker) {
-    this.infoOpen = true;
-    this.infoContent = marker;
+    if (marker.openInfoWindow === true) {
+      this.infoOpen = true;
+      this.infoContent = marker;
+    }
   }
 
   public closeInfoWindow() {

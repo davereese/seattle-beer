@@ -41,7 +41,8 @@ p {
 // crazy infoWindow positioning hack
 .gm-style-pbc ~ div {
   > div > div:last-child {
-    top: -28px !important;
+    top: -30px !important;
+    left: -1px !important;
   }
 }
 
