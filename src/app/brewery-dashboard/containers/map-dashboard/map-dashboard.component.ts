@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators/map';
@@ -79,6 +79,23 @@ interface marker {
         {{ marker.city }} WA, {{ marker.zip }}</p>
         <tag *ngFor="let tag of marker.tags" [tag]="tag"></tag>
         <p class="brewery-detail__meta"><a href="{{ marker.url }}" target="_blank">Website</a> | <a href="https://www.google.com/maps/dir/{{marker.address}},{{marker.city}},WA,{{marker.zip}}" target="_blank">Directions</a></p>
+        <div
+          class="visited-toggles"
+          *ngIf="loggedIn"
+        >
+          <button
+            *ngIf="!marker.visited"
+            type="button"
+            class="brewery-detail__button button-check-in"
+            (click)="handleCheckIn(marker.key)"
+          >Check In</button>
+          <button
+            *ngIf="marker.visited"
+            type="button"
+            class="brewery-detail__button button-reset"
+            (click)="handleReset(marker.key)"
+          >Reset</button>
+        </div>
       </agm-info-window>
     </agm-marker>
   </agm-map>
@@ -109,9 +126,9 @@ export class MapDashboardComponent implements OnInit {
   private breweriesSubscription: Subscription;
   private visitsSubscription: Subscription;
   private userId: string;
+  private _infoWindows;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     af: AngularFireDatabase
   ) {
@@ -185,9 +202,7 @@ export class MapDashboardComponent implements OnInit {
   }
 
   public selectMarker(infoWindow) {
-    if (this.previous_info_window == null) {
-      this.previous_info_window = infoWindow;
-    } else {
+    if (this.previous_info_window !== null) {
       this.previous_info_window.close();
     }
     this.previous_info_window = infoWindow;
@@ -266,6 +281,12 @@ export class MapDashboardComponent implements OnInit {
     });
   }
 
+  private removeMarker(value) {
+    const markerPos = this.markers.map((x) => x.key ).indexOf(value);
+    // @ts-ignore
+    this.markers.splice(markerPos);
+  }
+
   public handleVisitClick(target) {
     if (this.previous_info_window !== null) {
       this.previous_info_window.close();
@@ -277,6 +298,17 @@ export class MapDashboardComponent implements OnInit {
       this.visited = false;
       this.visitedFilter = this.unvisited === false ? false : null;
     }
+  }
+
+  public handleCheckIn(key) {
+    this.removeMarker(key);
+    // @ts-ignore
+    this.visitList.update(key, {0: true});
+  }
+
+  public handleReset(key) {
+    this.removeMarker(key);
+    this.visitList.remove(key);
   }
 
   ngOnDestroy() {
