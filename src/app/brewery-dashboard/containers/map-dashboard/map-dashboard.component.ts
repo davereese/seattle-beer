@@ -69,8 +69,7 @@ interface marker {
       [visible]="visitedFilter === marker.visited || visitedFilter === null || marker.name === 'geolocation'"
       [openInfoWindow]="marker.openInfoWindow"
       (markerClick)="selectMarker(marker)"
-    >
-    </agm-marker>
+    ></agm-marker>
     <agm-info-window
       class="brewery-info"
       [latitude]="infoContent.lat"
@@ -237,6 +236,7 @@ export class MapDashboardComponent implements OnInit {
   private pushMarkers() {
     // Single location
     if ( 'string' === typeof(this.data[0][0])) {
+      const tags: Array<string> = this.data[0][6].length > 0 ? this.data[0][6].split(",") : null;
       this.markers.push({
         lat: Number(this.data[0][2]),
         lng: Number(this.data[0][3]),
@@ -244,7 +244,7 @@ export class MapDashboardComponent implements OnInit {
         address: this.data[0][0],
         city: this.data[0][1],
         zip: this.data[0][8],
-        tags: this.data[0][6],
+        tags: tags,
         url: this.data[0][7],
         openInfoWindow: true,
         visited: null,
