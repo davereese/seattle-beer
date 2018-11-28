@@ -339,12 +339,14 @@ export class MapDashboardComponent implements OnInit {
     // @ts-ignore
     this.visitList.update(key, {0: true});
     this.infoContent.visited = true;
+    this.pushCenterMarker();
   }
 
   public handleReset(key) {
     this.removeMarker(key);
     this.visitList.remove(key);
     this.infoContent.visited = false;
+    this.pushCenterMarker();
   }
 
   ngOnDestroy() {
