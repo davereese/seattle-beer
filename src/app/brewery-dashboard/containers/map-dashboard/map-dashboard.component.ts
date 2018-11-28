@@ -140,6 +140,7 @@ export class MapDashboardComponent implements OnInit {
   public unvisited: boolean = false;
   public visitedFilter: boolean = null;
 
+  private urlParam: number;
   private visitList: AngularFireList<any[]> = null;
   private breweriesObservable: Observable<any[]>;
   private userVisitsObservable: Observable<any[]>;
@@ -153,7 +154,8 @@ export class MapDashboardComponent implements OnInit {
     af: AngularFireDatabase
   ) {
     this.route.params.subscribe((params) => {
-      if (params['id']){
+      if (params['id']) {
+        this.urlParam = params['id'];
         this.single = true;
         this.breweriesObservable = af.list('/Breweries/'+params['id']).valueChanges();
       } else {
@@ -192,6 +194,10 @@ export class MapDashboardComponent implements OnInit {
               this.data.push(brewery);
             });
           } else {
+            if (this.single) {
+              val[0][9] = val[1].some(index => index.key === this.urlParam );
+              val[0][10] = this.urlParam;
+            }
             this.data.push(val[0]);
           }
           this.pushMarkers();
@@ -233,10 +239,19 @@ export class MapDashboardComponent implements OnInit {
     this.infoContent = this.emptyInfoContent;
   }
 
+  private getIconColor(test: boolean): string {
+    if (test === true) {
+      return '../assets/images/marker2-1-visited-2.svg';
+    } else {
+      return '../assets/images/marker2-1.svg';
+    }
+  }
+
   private pushMarkers() {
     // Single location
     if ( 'string' === typeof(this.data[0][0])) {
       const tags: Array<string> = this.data[0][6].length > 0 ? this.data[0][6].split(",") : null;
+      let icon: string = this.getIconColor(this.data[0][9]);
       this.markers.push({
         lat: Number(this.data[0][2]),
         lng: Number(this.data[0][3]),
@@ -247,9 +262,10 @@ export class MapDashboardComponent implements OnInit {
         tags: tags,
         url: this.data[0][7],
         openInfoWindow: true,
-        visited: null,
+        visited: this.data[0][9],
+        key: this.data[0][10],
         icon: {
-          url: '../assets/images/marker2-1.svg',
+          url: icon,
           scaledSize: {width: 24, height: 30},
           anchor: {x: 12, y: 30}
         }
@@ -263,12 +279,7 @@ export class MapDashboardComponent implements OnInit {
         // if brewery has a lat and long, add it to the map
         if (element.latitude && element.longitude) {
           const tags: Array<string> = element.tags.length > 0 ? element.tags.split(",") : null;
-          let icon: string;
-          if (element.visited === true) {
-            icon = '../assets/images/marker2-1-visited-2.svg';
-          } else {
-            icon = '../assets/images/marker2-1.svg';
-          }
+          let icon: string = this.getIconColor(element.visited);
           this.markers.push({
             lat: Number(element.latitude),
             lng: Number(element.longitude),
