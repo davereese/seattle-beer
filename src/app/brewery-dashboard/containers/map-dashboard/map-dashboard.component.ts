@@ -309,7 +309,7 @@ export class MapDashboardComponent implements OnInit {
       lng: Number(this.lng),
       name: 'geolocation',
       icon: {
-        url: '../assets/images/geo_marker-2.svg',
+        url: '../assets/images/marker_geo.svg',
         size: {width: 20, height: 20},
         scaledSize: {width: 20, height: 20},
         anchor: {x: 10, y: 20},
