@@ -241,9 +241,9 @@ export class MapDashboardComponent implements OnInit {
 
   private getIconColor(test: boolean): string {
     if (test === true) {
-      return '../assets/images/marker2-1-visited-2.svg';
+      return '../assets/images/marker_visited.svg';
     } else {
-      return '../assets/images/marker2-1.svg';
+      return '../assets/images/marker.svg';
     }
   }
 
@@ -266,8 +266,8 @@ export class MapDashboardComponent implements OnInit {
         key: this.data[0][10],
         icon: {
           url: icon,
-          scaledSize: {width: 24, height: 30},
-          anchor: {x: 12, y: 30}
+          scaledSize: {width: 26, height: 30.5},
+          anchor: {x: 13, y: 30.5}
         }
       });
       // center map on marker
@@ -294,8 +294,8 @@ export class MapDashboardComponent implements OnInit {
             key: element.key,
             icon: {
               url: icon,
-              scaledSize: {width: 24, height: 30},
-              anchor: {x: 12, y: 30}
+              scaledSize: {width: 26, height: 30.5},
+              anchor: {x: 13, y: 30.5}
             }
           });
         }
@@ -309,10 +309,10 @@ export class MapDashboardComponent implements OnInit {
       lng: Number(this.lng),
       name: 'geolocation',
       icon: {
-        url: '../assets/images/location_marker.svg',
-        size: {width: 24, height: 24},
-        scaledSize: {width: 24, height: 24},
-        anchor: {x: 12, y: 24},
+        url: '../assets/images/geo_marker-2.svg',
+        size: {width: 20, height: 20},
+        scaledSize: {width: 20, height: 20},
+        anchor: {x: 10, y: 20},
       },
       openInfoWindow: false,
     });

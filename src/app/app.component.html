@@ -6,8 +6,10 @@
         #rla="routerLinkActive"
         [routerLinkActiveOptions]="{exact: true}"
       >
-        <img *ngIf="!rla.isActive" alt="Seattle Beer" src="assets/images/seattle_beer_main_logo_v2.svg">
-        <img *ngIf="rla.isActive" alt="Seattle Beer" src="assets/images/seattle_beer_main_logo_darker_v2.svg">
+        <img *ngIf="!rla.isActive" alt="Seattle Beer" class="logo__img" src="assets/images/seattle-beer-logo-new-grey_v2.svg">
+        <img *ngIf="!rla.isActive" alt="Seattle Beer" class="logo__img--m" src="assets/images/sb_logo.svg">
+        <img *ngIf="rla.isActive" alt="Seattle Beer" class="logo__img" src="assets/images/seattle-beer-logo-new-black_v2.svg">
+        <img *ngIf="rla.isActive" alt="Seattle Beer" class="logo__img--m" src="assets/images/sb_logo_black.svg">
       </a>
     </div>
     <a *ngIf="rla.isActive && !authService.isLoggedIn()" class="home-login" [routerLink]="'/login'">Login</a>

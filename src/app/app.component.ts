@@ -20,13 +20,13 @@ export class AppComponent {
     {
       link: '/list',
       name: 'LIST',
-      image: 'assets/images/list.svg',
+      image: 'assets/images/list_nav.svg',
       exact: true
     },
     {
       link: '/map',
       name: 'MAP',
-      image: 'assets/images/map.svg',
+      image: 'assets/images/map_nav.svg',
       exact: true
     }
   ];

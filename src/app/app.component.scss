@@ -24,12 +24,30 @@ nav {
       @media (min-width: $screen-sm) {
         max-width: 345px;
       }
+
+      &__img {
+        display: none;
+        max-width: 345px;
+
+        @media (min-width: $screen-sm) {
+          display: block;
+        }
+      }
+
+      &__img--m {
+        display: block;
+        max-width: 80px;
+
+        @media (min-width: $screen-sm) {
+          display: none;
+        }
+      }
     }
 
     .home-login {
       position: absolute;
-      right: 15px;
-      top: 11px;
+      right: 10px;
+      top: 15px;
       color: $white;
       text-shadow: 0 0 20px $black;
       letter-spacing: 1px;
@@ -49,14 +67,33 @@ nav {
 
   .logo {
     font-size: 16px;
-    padding: 13px 0 0 15px;
+    padding: 11px 0 0 15px;
     max-width: 150px;
     width: 100%;
     float: left;
 
     @media (min-width: $screen-sm) {
-      padding: 18px 0 0 15px;
+      padding: 12px 0 0 15px;
       max-width: 345px;
+    }
+
+    &__img {
+      display: none;
+      max-width: 150px;
+
+      @media (min-width: $screen-sm) {
+        display: block;
+        max-width: 345px;
+      }
+    }
+
+    &__img--m {
+      display: block;
+      max-width: 80px;
+
+      @media (min-width: $screen-sm) {
+        display: none;
+      }
     }
   }
 
@@ -76,10 +113,10 @@ nav {
       a {
         display: block;
         position: relative;
-        margin-top: 9px;
+        margin-top: 12px;
         margin-left: 10px;
         height: 29px;
-        width: 50px;
+        width: 40px;
         text-decoration: none;
         text-align: center;
         font-size: 1.3em;
@@ -89,21 +126,31 @@ nav {
 
         @media (min-width: $screen-sm) {
           margin-top: 9px;
-          width: 70px;
+          width: 50px;
           line-height: 1.8;
           font-size: 1.5em;
         }
 
         img {
           position: absolute;
-          top: 0;
+          top: 6px;
           left: 50%;
-          margin-left: -28px;
-          height: 32px;
+          margin-left: -8px;
+          height: 16px;
           transition: opacity 0.5s;
 
+          &[alt="LIST"] {
+            margin-left: -11px;
+          }
+
           @media (min-width: $screen-sm) {
-            height: 42px;
+            top: 11px;
+            margin-left: -10px;
+            height: 20px;
+
+            &[alt="LIST"] {
+              margin-left: -15px;
+            }
           }
         }
 
@@ -117,10 +164,13 @@ nav {
         }
 
         &.login {
+          margin-left: 15px;
+          width: auto;
           color: $white;
           font-weight: 300;
           font-size: 1em;
           letter-spacing: 1px;
+          transform: translateY(-2px);
 
           &:hover {
             color: $green-light;

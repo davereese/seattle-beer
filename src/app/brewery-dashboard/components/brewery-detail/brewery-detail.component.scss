@@ -8,6 +8,7 @@
   margin: 15px 15px 0;
   width: calc(100% - 60px);
   background: $white;
+  border-radius: 2px;
   box-shadow: 0 0 5px rgba($gray-med-2, 0.2);
   transition: box-shadow 0.5s;
 
@@ -40,12 +41,12 @@
   }
 
   &.visited {
-    background: lighten($yellow, 45%);
-    box-shadow: 0 0 5px rgba($gray-med-2, 0.4), inset 0px 0px 0px 1px lighten($yellow, 20%);
+    background: lighten($orange, 51%);
+    box-shadow: 0 0 5px rgba($gray-med-2, 0.4), inset 0px 0px 0px 2px $orange;
   }
 
   &.visited:hover {
-    box-shadow: 0 0 20px $gray-med-2, inset 0px 0px 0px 1px lighten($yellow, 20%);
+    box-shadow: 0 0 20px $gray-med-2, inset 0px 0px 0px 2px $orange;
   }
 
   &__number {

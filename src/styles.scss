@@ -41,7 +41,7 @@ p {
 // crazy infoWindow positioning hack
 .gm-style-pbc ~ div {
   > div > div:last-child {
-    top: -30px !important;
+    top: -25px !important;
     left: -1px !important;
   }
 }
@@ -80,58 +80,95 @@ p {
 }
 
 .loader {
+  position: relative;
   display: block;
   margin: calc(50vh - 22px) auto;
-  padding: 0;
+  padding: 0 0 0 50px;
   height: 45px;
   width: 42px;
-  box-shadow: 0 0 5px rgba($gray-med-2, 0.5);
   line-height: 0;
+  transform: scale(0.8);
 
-  @keyframes colorchange1 {
-    0% { background-color: $brown; }
-    25% { background-color: $orange; }
-    50% { background-color: $yellow; }
-    75% { background-color: $orange; }
-    100% { background-color: $brown; }
+  @keyframes myOrbit {
+    0% { transform: rotate(0deg) translate(-35px, -15px) rotate(0deg); }
+    40% { transform: rotate(-360deg) translate(-35px, -15px) rotate(0deg); }
+    100% { transform: rotate(-360deg) translate(-35px, -15px) rotate(0deg); }
   }
 
-  @keyframes colorchange2 {
-    0% { background-color: $orange; }
-    25% { background-color: $yellow; }
-    50% { background-color: $orange; }
-    75% { background-color: $brown; }
-    100% { background-color: $orange; }
+  @keyframes appear1 {
+    0% {
+      transform: translate(-35px, -15px);
+      opacity: 0;
+    }
+    35% {
+      transform: translate(-35px, -15px);
+      opacity: 0;
+    }
+    50% {
+      transform: translate(-50px, -22px);
+      opacity: 1;
+    }
+    98% {
+      transform: translate(-50px, -22px);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-35px, -15px);
+      opacity: 0;
+    }
   }
 
-  @keyframes colorchange3 {
-    0% { background-color: $yellow; }
-    25% { background-color: $orange; }
-    50% { background-color: $brown; }
-    75% { background-color: $orange; }
-    100% { background-color: $yellow; }
+  @keyframes appear2 {
+    0% {
+      transform: translate(-50px, -22px);
+      opacity: 0;
+    }
+    43% {
+      transform: translate(-50px, -22px);
+      opacity: 0;
+    }
+    58% {
+      transform: translate(-64px, -30px);
+      opacity: 1;
+    }
+    97% {
+      transform: translate(-64px, -30px);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50px, -22px);
+      opacity: 0;
+    }
   }
 
   &__bar {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    width: 14px;
-    height: 45px;
-    background-color: $brown;
-    animation-name: colorchange3;
-    animation-duration: 4s;
+    position: absolute;
+    width: 37px;
+    height: 44px;
+    background-image: url('./assets/images/drop1.svg');
+    animation-duration: 2s;
     animation-iteration-count: infinite;
-    animation-timing-function: linear;
+    animation-timing-function: ease-in-out;
+
+    &:nth-child(1) {
+      animation-name: myOrbit;
+      z-index: 3;
+    }
 
     &:nth-child(2) {
-      animation-name: colorchange2;
-      background-color: $orange;
+      width: 36px;
+      height: 42.5px;
+      background-image: url('./assets/images/drop2.svg');
+      animation-name: appear1;
+      z-index: 2;
     }
 
     &:nth-child(3) {
-      animation-name: colorchange1;
-      background-color: $yellow;
+      width: 36px;
+      height: 42.5px;
+      background-image: url('./assets/images/drop3.svg');
+      animation-name: appear2;
+      z-index: 1;
     }
   }
 }
