@@ -12,7 +12,7 @@ This is Seattle. Home to over 100 PNW breweries. From Redhook to Stoup, Elysian 
 
 ## Requirements
 
-- Node v6.9.5
+- Node 10.9.0
 
 ## Production
 Run `ng build --production` in a deploy branch

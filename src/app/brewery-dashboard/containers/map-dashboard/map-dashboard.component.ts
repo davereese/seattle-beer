@@ -108,7 +108,6 @@ interface marker {
   `
 })
 export class MapDashboardComponent implements OnInit {
-  previous_info_window = null;
   public infoOpen: boolean = false;
   public emptyInfoContent = {
     lat: null,
@@ -198,7 +197,9 @@ export class MapDashboardComponent implements OnInit {
               val[0][9] = val[1].some(index => index.key === this.urlParam );
               val[0][10] = this.urlParam;
             }
-            this.data.push(val[0]);
+            val[0].forEach((value) => {
+              this.data.push(value);
+            });
           }
           this.pushMarkers();
           this.isLoading = false;
@@ -249,21 +250,21 @@ export class MapDashboardComponent implements OnInit {
 
   private pushMarkers() {
     // Single location
-    if ( 'string' === typeof(this.data[0][0])) {
-      const tags: Array<string> = this.data[0][6].length > 0 ? this.data[0][6].split(",") : null;
-      let icon: string = this.getIconColor(this.data[0][9]);
+    if ( 'string' === typeof(this.data[0])) {
+      const tags: Array<string> = this.data[6].length > 0 ? this.data[6].split(",") : null;
+      let icon: string = this.getIconColor(this.data[9]);
       this.markers.push({
-        lat: Number(this.data[0][2]),
-        lng: Number(this.data[0][3]),
-        name: this.data[0][4],
-        address: this.data[0][0],
-        city: this.data[0][1],
-        zip: this.data[0][8],
+        lat: Number(this.data[2]),
+        lng: Number(this.data[3]),
+        name: this.data[4],
+        address: this.data[0],
+        city: this.data[1],
+        zip: this.data[8],
         tags: tags,
-        url: this.data[0][7],
+        url: this.data[7],
         openInfoWindow: true,
-        visited: this.data[0][9],
-        key: this.data[0][10],
+        visited: this.data[9],
+        key: this.data[10],
         icon: {
           url: icon,
           scaledSize: {width: 26, height: 30.5},
@@ -271,8 +272,8 @@ export class MapDashboardComponent implements OnInit {
         }
       });
       // center map on marker
-      this.lat = Number(this.data[0][2]);
-      this.lng = Number(this.data[0][3]);
+      this.lat = Number(this.data[2]);
+      this.lng = Number(this.data[3]);
     // All locations
     } else {
       this.data.forEach(element => {

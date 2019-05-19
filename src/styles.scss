@@ -46,6 +46,14 @@ p {
   }
 }
 
+.gm-style .gm-style-iw-c {
+  border-radius: 2px;
+}
+
+button.gm-ui-hover-effect {
+  display: none !important; // override inline style
+}
+
 .gm-style-iw {
   .agm-info-window-content {
     min-width: 300px;
@@ -53,24 +61,28 @@ p {
     font-family: 'Open Sans', sans-serif;
 
     h3 {
-      margin: 8px 0 0;
+      margin: 0;
       padding-right: 50px;
       font-size: 20px;
       font-weight: 300;
       color: $orange;
     }
 
+    p {
+      margin-bottom: 10px;
+    }
+
     .visited-toggles {
       .brewery-detail__button {
-        bottom: 14px;
-        right: 0;
+        bottom: 19px;
+        right: 13px;
       }
     }
 
     button.close {
       position: absolute;
-      top: 0;
-      right: -3px;
+      top: 10px;
+      right: 10px;
     }
   }
 
